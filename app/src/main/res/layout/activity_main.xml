@@ -48,8 +48,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/common_spacing"
         android:background="@android:color/transparent"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/author"
+        app:layout_constraintBottom_toBottomOf="@id/publish"
         tools:ignore="MissingConstraints"
         tools:srcCompat="@drawable/ic_baseline_more_vert_24" />
 
@@ -85,6 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_spacing"
         android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/contentBarrier"
         tools:srcCompat="@drawable/ic_baseline_favorite_24"
 
