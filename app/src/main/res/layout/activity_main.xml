@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/common_spacing"
@@ -14,7 +15,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_launcher_round"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        />
 
     <TextView
         android:id="@+id/author"
@@ -52,7 +54,7 @@
         app:layout_constraintTop_toTopOf="@id/author"
         app:layout_constraintBottom_toBottomOf="@id/publish"
         tools:ignore="MissingConstraints"
-        tools:srcCompat="@drawable/ic_baseline_more_vert_24" />
+        android:src="@drawable/ic_baseline_more_vert_24" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
@@ -88,7 +90,7 @@
         android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/contentBarrier"
-        tools:srcCompat="@drawable/ic_baseline_favorite_24"
+        android:src="@drawable/ic_like_24"
 
         />
 
@@ -98,12 +100,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_spacing"
         android:background="@android:color/transparent"
-        app:layout_constraintStart_toEndOf="@id/countId"
+        app:layout_constraintStart_toEndOf="@id/likeCount"
         app:layout_constraintTop_toBottomOf="@id/contentBarrier"
-        tools:srcCompat="@drawable/ic_baseline_share_24" />
+        android:src="@drawable/ic_baseline_share_24" />
 
     <TextView
-        android:id="@+id/countId"
+        android:id="@+id/likeCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -113,6 +115,7 @@
         tools:text="25" />
 
     <TextView
+        android:id="@+id/textShare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -122,7 +125,7 @@
         tools:text="100" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/viewCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/common_spacing"
@@ -136,7 +139,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_spacing"
         android:background="@android:color/transparent"
-        app:layout_constraintEnd_toStartOf="@id/textView"
+        app:layout_constraintEnd_toStartOf="@id/viewCount"
         app:layout_constraintTop_toBottomOf="@id/contentBarrier"
-        tools:srcCompat="@drawable/ic_baseline_visibility_24" />
+        android:src="@drawable/ic_baseline_visibility_24" />
+
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
