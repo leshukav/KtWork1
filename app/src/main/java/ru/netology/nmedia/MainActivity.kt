@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ru.netology.nmedia.databinding.ActivityMainBinding
 import androidx.activity.viewModels
-import ru.netology.nmedia.repository.PostRepositoryInMemoryImpl
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 
@@ -21,8 +20,8 @@ class MainActivity : AppCompatActivity() {
                 author.text = post.author
                 publish.text = post.publish
                 content.text = post.content
-                likeCount.text = PostRepositoryInMemoryImpl().logic(post.like)
-                shareCount.text = PostRepositoryInMemoryImpl().logic(post.share)
+                likeCount.text = DisplayCount.logic(post.like)
+                shareCount.text = DisplayCount.logic(post.share)
                 like.setImageResource(
                     if (post.likeByMy) R.drawable.ic_liked_24 else R.drawable.ic_like_24
                 )

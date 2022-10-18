@@ -3,8 +3,6 @@ package ru.netology.nmedia.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.Post
-import ru.netology.nmedia.R
-import java.math.BigDecimal
 
 class PostRepositoryInMemoryImpl : PostRepository {
     private var post = Post(
@@ -20,10 +18,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
     override fun like() {
         if (!post.likeByMy) {
             post = post.copy(like = post.like + 1, likeByMy = !post.likeByMy)
-            R.drawable.ic_liked_24
         } else {
             post = post.copy(like = post.like - 1, likeByMy = !post.likeByMy)
-            R.drawable.ic_like_24
         }
         data.value = post
     }
@@ -31,26 +27,6 @@ class PostRepositoryInMemoryImpl : PostRepository {
     override fun share() {
         post = post.copy(share = post.share + 10)
         data.value = post
-    }
-
-    fun logic(count: Int): String {
-        return when (count) {
-            in 1000..9999 -> {
-                ((count / 1000.0).toBigDecimal().setScale(1, BigDecimal.ROUND_DOWN)
-                    .toString() + "K")
-            }
-            in 10_000..999_999 -> {
-                ((count / 1000.0).toBigDecimal().setScale(0, BigDecimal.ROUND_DOWN)
-                    .toString() + "K")
-            }
-            in 1_000_000..10_000_000 -> {
-                (count / 1_000_000.0).toBigDecimal().setScale(0, BigDecimal.ROUND_DOWN)
-                    .toString() + "M"
-            }
-            else -> {
-                count.toString()
-            }
-        }
     }
 
 }
