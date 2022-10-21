@@ -7,9 +7,9 @@ import ru.netology.nmedia.Post
 class PostRepositoryInMemoryImpl : PostRepository {
     private var posts = List(50) {
         Post(
-            id = it.toLong(),
+            id = it.toLong() + 1,
             author = "Нетология. Университет интернет-профессий будущего",
-            content = "№$it  Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу.  Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb",
+            content = "№${it + 1}  Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу.  Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb",
             publish = "21 мая в 18:36",
             likeByMy = false
         )
@@ -35,4 +35,27 @@ class PostRepositoryInMemoryImpl : PostRepository {
         data.value = posts
     }
 
+    override fun removeById(id: Long) {
+        posts = posts.filter { it.id != id }
+        data.value = posts
+    }
+
+    override fun save(post: Post) {
+        var nextId = posts.size.toLong()
+        posts = if (post.id == 0L) {
+            listOf(
+                post.copy(
+                    id = nextId++,
+                    author = "Me",
+                    likeByMy = false,
+                    publish = "now"
+                )
+            ) + posts
+        } else {
+            posts.map {
+                if (it.id != post.id) it else it.copy(content = post.content)
+            }
+        }
+        data.value = posts
+    }
 }
