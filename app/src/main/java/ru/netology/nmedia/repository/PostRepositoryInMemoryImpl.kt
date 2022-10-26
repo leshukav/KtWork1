@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.Post
 
 class PostRepositoryInMemoryImpl : PostRepository {
-    private var posts = List(50) {
+    private var posts = List(10) {
         Post(
             id = it.toLong() + 1,
             author = "Нетология. Университет интернет-профессий будущего",

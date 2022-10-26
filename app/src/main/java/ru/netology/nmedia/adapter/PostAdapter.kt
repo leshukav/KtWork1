@@ -43,9 +43,9 @@ class PostViewHolder(
             author.text = post.author
             publish.text = post.publish
             content.text = post.content
-            like.setText(DisplayCount.logic(post.like))
-            share.setText(DisplayCount.logic(post.share))
-            visibility.setText(DisplayCount.logic(post.viewEye))
+            like.text = DisplayCount.logic(post.like)
+            share.text = DisplayCount.logic(post.share)
+            visibility.text = DisplayCount.logic(post.viewEye)
             like.isCheckable = post.likeByMy
 
             like.setOnClickListener {
