@@ -7,5 +7,6 @@ data class Post(
     val publish: String,
     val like: Int = 0,
     val share: Int = 990,
+    val viewEye: Int = 1,
     val likeByMy: Boolean
 )

@@ -41,11 +41,11 @@ class PostRepositoryInMemoryImpl : PostRepository {
     }
 
     override fun save(post: Post) {
-        var nextId = posts.size.toLong()
+        val nextId = posts.size.toLong()
         posts = if (post.id == 0L) {
             listOf(
                 post.copy(
-                    id = nextId++,
+                    id = nextId + 1,
                     author = "Me",
                     likeByMy = false,
                     publish = "now"
