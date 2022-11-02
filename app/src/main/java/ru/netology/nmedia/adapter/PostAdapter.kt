@@ -16,6 +16,7 @@ interface OnInteractionListener {
     fun onShare(post: Post)
     fun onRemove(post: Post)
     fun onEdit(post: Post)
+    fun onPlay(post: Post)
 }
 
 class PostAdapter(
@@ -46,8 +47,14 @@ class PostViewHolder(
             like.text = DisplayCount.logic(post.like)
             share.text = DisplayCount.logic(post.share)
             visibility.text = DisplayCount.logic(post.viewEye)
-            like.isCheckable = post.likeByMy
+            like.isChecked = post.likeByMy
 
+            play.setOnClickListener {
+                onInteractionListener.onPlay(post)
+            }
+            fabPlay.setOnClickListener {
+                onInteractionListener.onPlay(post)
+            }
             like.setOnClickListener {
                 onInteractionListener.onLike(post)
             }
