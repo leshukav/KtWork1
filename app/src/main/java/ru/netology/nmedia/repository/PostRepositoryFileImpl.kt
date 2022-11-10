@@ -49,7 +49,7 @@ class PostRepositoryFileImpl(
                 post.copy(
                     id = nextId + 1,
                     author = "Me",
-                    likeByMy = false,
+                    likeByMe = false,
                     publish = "now"
                 )
             ) + posts
@@ -64,10 +64,10 @@ class PostRepositoryFileImpl(
 
     override fun likeById(id: Long) {
         posts = posts.map {
-            if (it.id != id) it else if (!it.likeByMy) {
-                it.copy(like = it.like + 1, likeByMy = !it.likeByMy)
+            if (it.id != id) it else if (!it.likeByMe) {
+                it.copy(like = it.like + 1, likeByMe = !it.likeByMe)
             } else {
-                it.copy(like = it.like - 1, likeByMy = !it.likeByMy)
+                it.copy(like = it.like - 1, likeByMe = !it.likeByMe)
             }
         }
         data.value = posts

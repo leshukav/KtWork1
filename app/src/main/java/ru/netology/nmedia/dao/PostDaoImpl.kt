@@ -12,12 +12,12 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
             ${PostColumns.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
             ${PostColumns.COLUMN_AUTHOR} TEXT NOT NULL,
             ${PostColumns.COLUMN_CONTENT} TEXT NOT NULL,
-            ${PostColumns.COLUMN_PUBLISHED} TEXT NOT NULL,
-            ${PostColumns.COLUMN_LIKES} INTEGER NOT NULL DEFAULT 0,
+            ${PostColumns.COLUMN_PUBLISHE} TEXT NOT NULL,
+            ${PostColumns.COLUMN_LIKE} INTEGER NOT NULL DEFAULT 0,
             ${PostColumns.COLUMN_SHARE} INTEGER NOT NULL DEFAULT 990,
             ${PostColumns.COLUMN_VIEWEYE} INTEGER NOT NULL DEFAULT 1,
             ${PostColumns.COLUMN_LIKED_BY_ME} BOOLEAN NOT NULL DEFAULT 0,
-            ${PostColumns.COLUMN_VIDEO} TEXT NULL
+            ${PostColumns.COLUMN_VIDEO} TEXT NOT NULL 
         );
         """.trimIndent()
     }
@@ -27,8 +27,8 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         const val COLUMN_ID = "id"
         const val COLUMN_AUTHOR = "author"
         const val COLUMN_CONTENT = "content"
-        const val COLUMN_PUBLISHED = "published"
-        const val COLUMN_LIKES = "likes"
+        const val COLUMN_PUBLISHE = "published"
+        const val COLUMN_LIKE = "likes"
         const val COLUMN_SHARE = "share"
         const val COLUMN_VIEWEYE = "viewEye"
         const val COLUMN_LIKED_BY_ME = "likedByMe"
@@ -38,8 +38,8 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
             COLUMN_ID,
             COLUMN_AUTHOR,
             COLUMN_CONTENT,
-            COLUMN_PUBLISHED,
-            COLUMN_LIKES,
+            COLUMN_PUBLISHE,
+            COLUMN_LIKE,
             COLUMN_SHARE,
             COLUMN_VIEWEYE,
             COLUMN_LIKED_BY_ME,
@@ -70,7 +70,8 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
             // TODO: remove hardcoded values
             put(PostColumns.COLUMN_AUTHOR, "Me")
             put(PostColumns.COLUMN_CONTENT, post.content)
-            put(PostColumns.COLUMN_PUBLISHED, "now")
+            put(PostColumns.COLUMN_PUBLISHE, "now")
+            put(PostColumns.COLUMN_VIDEO, "https://www.youtube.com/watch?v=vJ8unmdwT3M")
         }
         val id = if (post.id != 0L) {
             db.update(
@@ -132,9 +133,12 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
                 id = getLong(getColumnIndexOrThrow(PostColumns.COLUMN_ID)),
                 author = getString(getColumnIndexOrThrow(PostColumns.COLUMN_AUTHOR)),
                 content = getString(getColumnIndexOrThrow(PostColumns.COLUMN_CONTENT)),
-                publish = getString(getColumnIndexOrThrow(PostColumns.COLUMN_PUBLISHED)),
-                likeByMy = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_LIKED_BY_ME)) != 0,
-                like = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_LIKES)),
+                publish = getString(getColumnIndexOrThrow(PostColumns.COLUMN_PUBLISHE)),
+                like = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_LIKE)),
+                share = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_SHARE)),
+                viewEye = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_VIEWEYE)),
+                likeByMe = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_LIKED_BY_ME)) != 0,
+                video = getString(getColumnIndexOrThrow(PostColumns.COLUMN_VIDEO)),
             )
         }
     }

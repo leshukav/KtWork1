@@ -47,7 +47,7 @@ class PostViewHolder(
             like.text = DisplayCount.logic(post.like)
             share.text = DisplayCount.logic(post.share)
             visibility.text = DisplayCount.logic(post.viewEye)
-            like.isChecked = post.likeByMy
+            like.isChecked = post.likeByMe
 
             play.setOnClickListener {
                 onInteractionListener.onPlay(post)

@@ -11,7 +11,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
             author = "Нетология. Университет интернет-профессий будущего",
             content = "№${it + 1}  Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу.  Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb",
             publish = "21 мая в 18:36",
-            likeByMy = false
+            likeByMe = false,
+            video = "https://www.youtube.com/watch?v=vJ8unmdwT3M"
         )
     }
     private val data = MutableLiveData(posts)
@@ -19,10 +20,10 @@ class PostRepositoryInMemoryImpl : PostRepository {
     override fun get(): LiveData<List<Post>> = data
     override fun likeById(id: Long) {
         posts = posts.map {
-            if (it.id != id) it else if (!it.likeByMy) {
-                it.copy(like = it.like + 1, likeByMy = !it.likeByMy)
+            if (it.id != id) it else if (!it.likeByMe) {
+                it.copy(like = it.like + 1, likeByMe = !it.likeByMe)
             } else {
-                it.copy(like = it.like - 1, likeByMy = !it.likeByMy)
+                it.copy(like = it.like - 1, likeByMe = !it.likeByMe)
             }
         }
         data.value = posts
@@ -47,8 +48,9 @@ class PostRepositoryInMemoryImpl : PostRepository {
                 post.copy(
                     id = nextId + 1,
                     author = "Me",
-                    likeByMy = false,
-                    publish = "now"
+                    likeByMe = false,
+                    publish = "now",
+                    video = "https://www.youtube.com/watch?v=vJ8unmdwT3M"
                 )
             ) + posts
         } else {

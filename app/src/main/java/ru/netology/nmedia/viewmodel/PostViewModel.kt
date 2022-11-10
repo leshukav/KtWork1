@@ -3,21 +3,19 @@ package ru.netology.nmedia.viewmodel
 import androidx.lifecycle.MutableLiveData
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import ru.netology.nmedia.Post
 import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.repository.PostRepository
-import ru.netology.nmedia.repository.PostRepositoryFileImpl
-import ru.netology.nmedia.repository.PostRepositoryInMemoryImpl
 import ru.netology.nmedia.repository.PostRepositorySQLiteImpl
 
 private val empty = Post(
     id = 0,
     content = "",
     author = "",
-    likeByMy = false,
+    likeByMe = false,
     publish = "",
-    share = 0
+    share = 0,
+    video = "https://www.youtube.com/watch?v=vJ8unmdwT3M"
 )
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
@@ -48,7 +46,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun changeContentAndSave(content: String) {
-        edited.value?.let {
+        edited.value?.let { it ->
             val text = content.trim()
             if (it.content == text) {
                 return
