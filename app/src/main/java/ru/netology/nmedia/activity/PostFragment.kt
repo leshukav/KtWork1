@@ -56,7 +56,7 @@ class PostFragment : Fragment() {
             }
 
             override fun onEdit(post: Post) {
-                 viewModel.edit(post)
+                viewModel.edit(post)
             }
 
             override fun onPlay(post: Post) {
@@ -70,7 +70,7 @@ class PostFragment : Fragment() {
             }
 
         })
-
+      
         viewModel.data.observe(viewLifecycleOwner) { posts ->
 
             val post = posts.find { it.content == arguments?.textArg } ?: run {
@@ -86,9 +86,11 @@ class PostFragment : Fragment() {
                 return@observe
             }
             val text = it.content
-            findNavController().navigate(R.id.action_postFragment2_to_newPostFragment,Bundle().apply {
-                textArg = text
-            } )
+            findNavController().navigate(
+                R.id.action_postFragment2_to_newPostFragment,
+                Bundle().apply {
+                    textArg = text
+                })
         }
         return binding.root
     }
