@@ -9,4 +9,8 @@
     <string name="chooser_share_post">chooser_share_post</string>
     <string name="error_empty_content">Content can\\\'t be empty</string>
     <string name="add_post">Add_post</string>
+    <string name="channel_remote_name">Server notifications</string>
+    <string name="channel_remote_description">Notifications from remote server</string>
+    <string name="notification_user_liked">User %1$s liked %2$s\\\'s post</string>
+    <string name="google_play_unavailable">Google Api Unavailable</string>
 </resources>

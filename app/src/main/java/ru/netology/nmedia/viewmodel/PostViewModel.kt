@@ -3,11 +3,11 @@ package ru.netology.nmedia.viewmodel
 import androidx.lifecycle.MutableLiveData
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import ru.netology.nmedia.Post
 import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositoryImpl
-import ru.netology.nmedia.repository.PostRepositorySQLiteImpl
 
 private val empty = Post(
     id = 0,
@@ -35,6 +35,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             repository.save(it)
         }
         edited.value = empty
+
     }
 
     fun cancelEdit() {
@@ -46,16 +47,17 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun changeContentAndSave(content: String) {
-        edited.value?.let { it ->
-            val text = content.trim()
-            if (it.content == text) {
-                return
-            }
-            edited.value?.let {
-                repository.save(it.copy(content = text))
-            }
-            edited.value = empty
+        // edited.value?.let { it ->
+        val text = content.trim()
+//            if (it.content == text) {
+//                return
+//            }
+        edited.value?.let {
+            repository.save(it.copy(content = text))
         }
+        edited.value = empty
+        //       }
 
     }
+
 }
