@@ -12,11 +12,13 @@ import ru.netology.nmedia.StringArg
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
 import ru.netology.nmedia.viewmodel.PostViewModel
 
+
 class NewPostFragment : Fragment() {
 
     companion object {
         var Bundle.textArg by StringArg
     }
+
     val viewModel by viewModels<PostViewModel>(
         ownerProducer = ::requireParentFragment
     )
@@ -35,15 +37,16 @@ class NewPostFragment : Fragment() {
         }
 
 
-         binding.editPost.requestFocus()
-         binding.ok.setOnClickListener {
-             val text = binding.editPost.text.toString()
-             if (!text.isNullOrBlank()) {  viewModel.changeContentAndSave(text) }
-             AndroidUtils.hideKeyboard(requireView())
-                 findNavController().navigateUp()
+        binding.editPost.requestFocus()
+        binding.ok.setOnClickListener {
+            val text = binding.editPost.text.toString()
+            if (!text.isNullOrBlank()) {
+                viewModel.changeContentAndSave(text)
+            }
+            AndroidUtils.hideKeyboard(requireView())
+            findNavController().navigateUp()
         }
         return binding.root
     }
-
 
 }

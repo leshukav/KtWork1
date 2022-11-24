@@ -6,13 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.Post
 import ru.netology.nmedia.R
-import ru.netology.nmedia.StringArg
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostViewHolder
@@ -32,7 +30,6 @@ class PostFragment : Fragment() {
         arguments?.textArg?.let {
             binding.post.content.setText(it)
         }
-
 
         val viewHolder = PostViewHolder(binding.post, object : OnInteractionListener {
             override fun onLike(post: Post) {
@@ -94,5 +91,6 @@ class PostFragment : Fragment() {
         }
         return binding.root
     }
+
 
 }
