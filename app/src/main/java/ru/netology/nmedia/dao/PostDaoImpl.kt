@@ -3,6 +3,7 @@ package ru.netology.nmedia.dao
 import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+
 import ru.netology.nmedia.Post
 
 class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
@@ -63,6 +64,23 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
             }
         }
         return posts
+    }
+
+    override fun getLastPost(): Post {
+        val post : Post
+        db.query(
+            PostColumns.TABLE,
+            PostColumns.ALL_COLUMNS,
+            null,
+            null,
+            null,
+            null,
+            "${PostColumns.COLUMN_ID} DESC"
+        ).use {
+            it.moveToLast()
+            post = map(it)
+        }
+        return post
     }
 
     override fun save(post: Post): Post {

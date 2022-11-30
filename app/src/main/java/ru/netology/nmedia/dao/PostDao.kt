@@ -5,6 +5,7 @@ import ru.netology.nmedia.Post
 
 interface PostDao {
     fun get(): List<Post>
+    fun getLastPost(): Post
     fun save(post: Post): Post
     fun likeById(id: Long)
     fun shareById(id: Long)

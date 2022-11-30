@@ -7,12 +7,14 @@ import androidx.lifecycle.LiveData
 import ru.netology.nmedia.Post
 import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.repository.PostRepository
+import ru.netology.nmedia.repository.PostRepositoryFileImpl
 import ru.netology.nmedia.repository.PostRepositoryImpl
+import ru.netology.nmedia.repository.PostRepositorySharedPrefsImpl
 
 private val empty = Post(
     id = 0,
     content = "",
-    author = "",
+    author = "Pushkin",
     likeByMe = false,
     publish = "",
     share = 0,

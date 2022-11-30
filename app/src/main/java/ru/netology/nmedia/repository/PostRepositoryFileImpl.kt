@@ -1,5 +1,6 @@
 package ru.netology.nmedia.repository
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,9 +8,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.netology.nmedia.Post
 
-class PostRepositoryFileImpl(
-    private val context: Context,
-    ) : PostRepository {
+class PostRepositoryFileImpl(application: Application) : PostRepository {
 
 
     private val gson = Gson()
@@ -27,21 +26,25 @@ class PostRepositoryFileImpl(
     private var posts = emptyList<Post>()
     private val data = MutableLiveData(posts)
 
-    init {
-        val file = context.filesDir.resolve(filename)
-        if (file.exists()) {
-            // если файл есть - читаем
-            context.openFileInput(filename).bufferedReader().use {
-                posts = gson.fromJson(it, type)
-                data.value = posts
-            }
-        } else {
-            // если нет, записываем пустой массив
-            sync()
-        }
-    }
+//    init {
+//        val file = context.filesDir.resolve(filename)
+//        if (file.exists()) {
+//            // если файл есть - читаем
+//            context.openFileInput(filename).bufferedReader().use {
+//                posts = gson.fromJson(it, type)
+//                data.value = posts
+//            }
+//        } else {
+//            // если нет, записываем пустой массив
+//            sync()
+//        }
+//    }
 
     override fun get(): LiveData<List<Post>> = data
+    override fun getLastPost(): Post {
+        TODO("Not yet implemented")
+    }
+
     override fun save(post: Post) {
         val nextId = posts.size.toLong()
         posts = if (post.id == 0L) {
@@ -59,7 +62,7 @@ class PostRepositoryFileImpl(
             }
         }
         data.value = posts
-        sync()
+   //     sync()
     }
 
     override fun likeById(id: Long) {
@@ -71,7 +74,7 @@ class PostRepositoryFileImpl(
             }
         }
         data.value = posts
-        sync()
+ //       sync()
     }
 
     override fun shareById(id: Long) {
@@ -84,12 +87,12 @@ class PostRepositoryFileImpl(
     override fun removeById(id: Long) {
         posts = posts.filter { it.id != id }
         data.value = posts
-        sync()
+  //      sync()
     }
 
-    private fun sync() {
-        context.openFileOutput(filename, Context.MODE_PRIVATE).bufferedWriter().use {
-            it.write(gson.toJson(posts))
-        }
-    }
+//    private fun sync() {
+//        context.openFileOutput(filename, Context.MODE_PRIVATE).bufferedWriter().use {
+//            it.write(gson.toJson(posts))
+//        }
+//    }
 }

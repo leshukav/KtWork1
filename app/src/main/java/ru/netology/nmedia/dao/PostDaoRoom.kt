@@ -11,6 +11,9 @@ interface PostDaoRoom {
     @Query("SELECT * FROM PostEntity ORDER BY id DESC")
     fun get(): LiveData<List<PostEntity>>
 
+    @Query("SELECT * FROM PostEntity ORDER BY id DESC LIMIT 1")
+    fun getLastPost(): PostEntity
+
     @Insert
     fun insert(post: PostEntity)
 

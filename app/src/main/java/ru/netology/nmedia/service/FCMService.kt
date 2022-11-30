@@ -3,21 +3,23 @@ package ru.netology.nmedia.service
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
-import ru.netology.nmedia.Post
 import ru.netology.nmedia.R
-import ru.netology.nmedia.dao.PostDaoRoom
+import ru.netology.nmedia.R.mipmap.ic_launcher
+import ru.netology.nmedia.db.AppDb
+import ru.netology.nmedia.repository.PostRepositoryImpl
 import kotlin.random.Random
 
 
-class FCMService : FirebaseMessagingService() {
+class FCMService() : FirebaseMessagingService() {
     private val action = "action"
-    private val contents = "contents"
+    private val content = "content"
     private val channelId = "remote"
     private val gson = Gson()
 
@@ -39,8 +41,8 @@ class FCMService : FirebaseMessagingService() {
 
         message.data[action]?.let {
             when (Action.valueOf(it)) {
-                Action.LIKE -> handleLike(gson.fromJson(message.data[contents], Like::class.java))
-                Action.NEWPOST -> handlePost(gson.fromJson(message.data[contents], Post::class.java))
+                Action.LIKE -> handleLike(gson.fromJson(message.data[content], Like::class.java))
+                Action.NEWPOST -> handlePost()//(gson.fromJson(message.data[contents], Post::class.java))
             }
         }
     }
@@ -48,18 +50,29 @@ class FCMService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         println(token)
     }
-    private fun handlePost(contents: Post) {
-         val dao: PostDaoRoom
-                    
+
+    private fun handlePost() {
+        val dao = PostRepositoryImpl(AppDb.getInstance(context = application).postDao())
+        val post = dao.getLastPost()
+
         val notification = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle(getString(R.string.new_post))
-            .setStyle(NotificationCompat.BigTextStyle()
-                .bigText(getString(
-                    R.string.notification_user_liked,
-                    contents.author,
-                    contents.content,
-                )))
+            .setContentTitle(getString(R.string.new_post, post.author))
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    resources,
+                    ic_launcher
+                )
+            )
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(
+                        getString(
+                            R.string.notification_new_post,
+                            post.content
+                        )
+                    )
+            )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
 
@@ -67,24 +80,16 @@ class FCMService : FirebaseMessagingService() {
             .notify(Random.nextInt(100_000), notification)
     }
 
-
-    private fun handleLike(contents: Like) {
+    private fun handleLike(content: Like) {
         val notification = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle(getString(R.string.new_post))
-            .setStyle(NotificationCompat.BigTextStyle()
-                .bigText(getString(
+            .setContentTitle(
+                getString(
                     R.string.notification_user_liked,
-                    contents.userName,
-                    contents.postAuthor,
-                 )))
-//            .setContentTitle(
-//                getString(
-//                    R.string.notification_user_liked,
-//                    content.userName,
-//                    content.postAuthor,
-//                )
-//            )
+                    content.userName,
+                    content.postAuthor,
+                )
+            )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
 

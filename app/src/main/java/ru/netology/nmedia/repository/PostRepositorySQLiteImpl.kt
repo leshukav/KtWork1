@@ -17,6 +17,9 @@ class PostRepositorySQLiteImpl(
     }
 
     override fun get(): LiveData<List<Post>> = data
+    override fun getLastPost(): Post {
+        TODO("Not yet implemented")
+    }
 
     override fun save(post: Post) {
         val id = post.id
