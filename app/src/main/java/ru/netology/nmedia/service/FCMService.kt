@@ -1,12 +1,10 @@
 package ru.netology.nmedia.service
 
-import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Build
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -60,14 +58,7 @@ class FCMService() : FirebaseMessagingService() {
                     Action.NEWPOST -> handlePost()
                 }
             }
-        }
-//        } else {   Пока не знаю можно ли кинуть тост...
-//            Toast.makeText(
-//                this@FCMService,
-//                "Action is wrong",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//        }
+        } else handleError()
     }
 
     override fun onNewToken(token: String) {
@@ -99,6 +90,16 @@ class FCMService() : FirebaseMessagingService() {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
 
+        NotificationManagerCompat.from(this)
+            .notify(Random.nextInt(100_000), notification)
+    }
+
+    private fun handleError() {
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle("Action is wrong")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .build()
         NotificationManagerCompat.from(this)
             .notify(Random.nextInt(100_000), notification)
     }
