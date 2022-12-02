@@ -1,10 +1,12 @@
 package ru.netology.nmedia.service
 
+import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Build
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -38,13 +40,34 @@ class FCMService() : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
+        val checkEnum: Boolean =
+            try {
+                message.data[action]?.let { Action.valueOf(it) }
+                true
+            } catch (e: Exception) {
+                false
+            }
 
-        message.data[action]?.let {
-            when (Action.valueOf(it)) {
-                Action.LIKE -> handleLike(gson.fromJson(message.data[content], Like::class.java))
-                Action.NEWPOST -> handlePost()//(gson.fromJson(message.data[contents], Post::class.java))
+        if (checkEnum) {
+            message.data[action]?.let {
+                when (Action.valueOf(it)) {
+                    Action.LIKE -> handleLike(
+                        gson.fromJson(
+                            message.data[content],
+                            Like::class.java
+                        )
+                    )
+                    Action.NEWPOST -> handlePost()
+                }
             }
         }
+//        } else {   Пока не знаю можно ли кинуть тост...
+//            Toast.makeText(
+//                this@FCMService,
+//                "Action is wrong",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }
     }
 
     override fun onNewToken(token: String) {
@@ -99,7 +122,7 @@ class FCMService() : FirebaseMessagingService() {
 }
 
 enum class Action {
-    LIKE, NEWPOST,
+    LIKE, NEWPOST
 }
 
 data class Like(
