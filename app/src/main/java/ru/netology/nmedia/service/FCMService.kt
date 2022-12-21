@@ -66,32 +66,32 @@ class FCMService() : FirebaseMessagingService() {
     }
 
     private fun handlePost() {
-        val dao = PostRepositoryImpl(AppDb.getInstance(context = application).postDao())
-        val post = dao.getLastPost()
-
-        val notification = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle(getString(R.string.new_post, post.author))
-            .setLargeIcon(
-                BitmapFactory.decodeResource(
-                    resources,
-                    ic_launcher
-                )
-            )
-            .setStyle(
-                NotificationCompat.BigTextStyle()
-                    .bigText(
-                        getString(
-                            R.string.notification_new_post,
-                            post.content
-                        )
-                    )
-            )
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .build()
-
-        NotificationManagerCompat.from(this)
-            .notify(Random.nextInt(100_000), notification)
+//        val dao = PostRepositoryImpl(AppDb.getInstance(context = application).postDao())
+//        val post = dao.getLastPost()
+//
+//        val notification = NotificationCompat.Builder(this, channelId)
+//            .setSmallIcon(R.drawable.ic_notification)
+//            .setContentTitle(getString(R.string.new_post, post.author))
+//            .setLargeIcon(
+//                BitmapFactory.decodeResource(
+//                    resources,
+//                    ic_launcher
+//                )
+//            )
+//            .setStyle(
+//                NotificationCompat.BigTextStyle()
+//                    .bigText(
+//                        getString(
+//                            R.string.notification_new_post,
+//                            post.content
+//                        )
+//                    )
+//            )
+//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//            .build()
+//
+//        NotificationManagerCompat.from(this)
+//            .notify(Random.nextInt(100_000), notification)
     }
 
     private fun handleError() {
