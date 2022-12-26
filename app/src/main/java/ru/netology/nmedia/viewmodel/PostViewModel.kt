@@ -16,10 +16,8 @@ private val empty = Post(
     id = 0,
     content = "",
     author = "Pushkin",
-    likeByMe = false,
-    publish = "",
-    share = 0,
-    video = "https://www.youtube.com/watch?v=vJ8unmdwT3M"
+    likedByMe = false,
+    published = 26122022,
 )
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {

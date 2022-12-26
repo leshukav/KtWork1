@@ -43,12 +43,12 @@ class PostViewHolder(
     fun bind(post: Post) {
         binding.apply {
             author.text = post.author
-            publish.text = post.publish
+            publish.text = post.published.toString()
             content.text = post.content
-            like.text = DisplayCount.logic(post.like)
+            like.text = DisplayCount.logic(post.likes)
             share.text = DisplayCount.logic(post.share)
             visibility.text = DisplayCount.logic(post.viewEye)
-            like.isChecked = post.likeByMe
+            like.isChecked = post.likedByMe
 
             play.setOnClickListener {
                 onInteractionListener.onPlay(post)

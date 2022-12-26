@@ -32,7 +32,7 @@ class FeedFragment : Fragment() {
 
         val adapter = PostAdapter(object : OnInteractionListener {
             override fun onLike(post: Post) {
-                if (post.likeByMe) {
+                if (post.likedByMe) {
                     viewModel.unlikeById(post.id)
                 } else {
                     viewModel.likeById(post.id)
