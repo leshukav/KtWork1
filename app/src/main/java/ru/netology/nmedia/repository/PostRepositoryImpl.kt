@@ -3,12 +3,12 @@ package ru.netology.nmedia.repository
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.internal.EMPTY_REQUEST
 import ru.netology.nmedia.Post
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class PostRepositoryImpl: PostRepository {
@@ -36,74 +36,117 @@ class PostRepositoryImpl: PostRepository {
                 gson.fromJson(it, typeToken.type)
             }
     }
-
-//    override fun getLastPost(): Post {
-//        // TODO: do this in homework
-//        val request: Request = Request.Builder()
-//            .url("${BASE_URL}/api/slow/posts")
-//            .build()
-//
-//        return client.newCall(request)
-//            .execute()
-//            .let { it.body?.string() ?: throw RuntimeException("body is null") }
-//            .let {
-//                gson.fromJson(it, typeToken.type)
-//            }
-//    }
-
-    override fun likeById(id: Long): Post {
+    override fun getAllAsync(callback: PostRepository.GetAllCallback<List<Post>>) {
         val request: Request = Request.Builder()
-            .url("${BASE_URL}/api/posts/${id}/likes")
-            .post(EMPTY_REQUEST)
+            .url("${BASE_URL}/api/slow/posts")
             .build()
 
-       return client.newCall(request)
-            .execute()
-           .let { it.body?.string() ?: throw RuntimeException("body is null") }
-           .let {
-                gson.fromJson(it, Post::class.java)
-            }
+        client.newCall(request)
+            .enqueue(object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string() ?: throw RuntimeException("body is null")
+                    try {
+                        callback.onSuccess(gson.fromJson(body, typeToken.type))
+                    } catch (e: Exception) {
+                        callback.onError(e)
+                    }
+                }
+                override fun onFailure(call: Call, e: IOException) {
+                    callback.onError(e)
+                }
+            })
     }
 
-    override fun unlikeById(id: Long): Post {
+    override fun removeById(id: Long, callback: PostRepository.GetAllCallback<Unit>) {
         val request: Request = Request.Builder()
-            .url("${BASE_URL}/api/posts/${id}/likes")
+            .url("${BASE_URL}/api/slow/posts/$id")
             .delete()
             .build()
 
-       return client.newCall(request)
-            .execute()
-           .let { it.body?.string() ?: throw RuntimeException("body is null") }
-           .let {
-               gson.fromJson(it, Post::class.java)
-           }
+        client.newCall(request)
+            .enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    callback.onError(e)
+                    println(e.message)
+                }
+                override fun onResponse(call: Call, response: Response) {
+                  callback.onSuccess(Unit)
+                }
+
+            })
+
     }
-
-
-    override fun shareById(id: Long) {
-        // TODO: do this in homework
-    }
-
-    override fun save(post: Post) {
+    override fun save(post: Post, callback: PostRepository.GetAllCallback<Post>) {
         val request: Request = Request.Builder()
             .post(gson.toJson(post).toRequestBody(jsonType))
             .url("${BASE_URL}/api/slow/posts")
             .build()
 
         client.newCall(request)
-            .execute()
-            .close()
+            .enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    callback.onError(e)
+                }
+                override fun onResponse(call: Call, response: Response) {
+
+                }
+
+            })
     }
 
-    override fun removeById(id: Long) {
+    override fun likeById(id: Long, callback: PostRepository.GetAllCallback<Post>){
         val request: Request = Request.Builder()
-            .delete()
-            .url("${BASE_URL}/api/slow/posts/$id")
+            .url("${BASE_URL}/api/posts/${id}/likes")
+            .post(EMPTY_REQUEST)
             .build()
 
-        client.newCall(request)
-            .execute()
-            .close()
+        return client.newCall(request)
+            .enqueue(object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string() ?: throw RuntimeException("body is null")
+                    try {
+                        callback.onSuccess(gson.fromJson(body, Post::class.java))
+                    } catch (e: Exception) {
+                        callback.onError(e)
+                    }
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    println(callback.onError(e))
+                }
+            })
     }
+
+    override fun unlikeById(id: Long, callback: PostRepository.GetAllCallback<Post>) {
+        val request: Request = Request.Builder()
+            .url("${BASE_URL}/api/posts/${id}/likes")
+            .delete(EMPTY_REQUEST)
+            .build()
+
+        return client.newCall(request)
+            .enqueue(object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string() ?: throw RuntimeException("body is null")
+                    try {
+                        callback.onSuccess(gson.fromJson(body, Post::class.java))
+                    } catch (e: Exception) {
+                        callback.onError(e)
+                    }
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    println(callback.onError(e))
+                }
+            })
+    }
+
+
+    override fun shareById(id: Long, callback: PostRepository.GetAllCallback<Unit>) {
+        // TODO: do this in homework
+    }
+
+
+
+
 
 }
