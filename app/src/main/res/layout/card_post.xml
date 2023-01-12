@@ -9,7 +9,7 @@
     tools:context=".activity.FeedFragment">
 
     <ImageView
-        android:id="@+id/avatar"
+        android:id="@+id/authorAvatar"
         android:layout_width="@dimen/post_avatar_size"
         android:layout_height="@dimen/post_avatar_size"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,8 +26,8 @@
         android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@id/publish"
         app:layout_constraintEnd_toStartOf="@id/menu"
-        app:layout_constraintStart_toEndOf="@id/avatar"
-        app:layout_constraintTop_toTopOf="@id/avatar"
+        app:layout_constraintStart_toEndOf="@id/authorAvatar"
+        app:layout_constraintTop_toTopOf="@id/authorAvatar"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="@sample/post.json/data/author" />
 
@@ -36,8 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/common_spacing"
-        app:layout_constraintBottom_toBottomOf="@id/avatar"
-        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintBottom_toBottomOf="@id/authorAvatar"
+        app:layout_constraintStart_toEndOf="@id/authorAvatar"
         app:layout_constraintTop_toBottomOf="@id/author"
         tools:ignore="MissingConstraints"
         tools:text="@sample/post.json/data/published" />
@@ -58,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="avatar,publish,menu"
+        app:constraint_referenced_ids="authorAvatar,publish,menu"
         tools:ignore="UnknownId" />
 
     <TextView
@@ -79,7 +79,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/content"
-        app:srcCompat='@drawable/ic_video_png' />
+        tools:srcCompat='@drawable/ic_video_png' />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_play"

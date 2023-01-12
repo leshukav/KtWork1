@@ -1,15 +1,22 @@
 package ru.netology.nmedia.adapter
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.PopupMenu
+import androidx.annotation.DrawableRes
+import androidx.constraintlayout.widget.Placeholder
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.TransformationUtils.circleCrop
 import ru.netology.nmedia.DisplayCount
 import ru.netology.nmedia.Post
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
+import ru.netology.nmedia.enumeration.AttachmentType
 
 interface OnInteractionListener {
     fun onLike(post: Post)
@@ -42,7 +49,21 @@ class PostViewHolder(
 
     fun bind(post: Post) {
         binding.apply {
+            fabPlay.hide()
             author.text = post.author
+            if (post.authorAvatar != "" ) {
+                val url = "http://10.0.2.2:9999/avatars/${post.authorAvatar}"
+            binding.authorAvatar.load(url)
+            } else {
+                authorAvatar.setImageResource(R.drawable.ic_error_100)
+            }
+            if ((post.attachment?.type == AttachmentType.IMAGE) && (post.attachment?.type != null)) {
+               val url = "http://10.0.2.2:9999/images/${post.attachment?.url}"
+                Glide.with(binding.play)
+                    .load(url)
+                    .timeout(10_000)
+                    .into(binding.play)
+            }
             publish.text = post.published.toString()
             content.text = post.content
             like.text = DisplayCount.logic(post.likes)
@@ -85,6 +106,18 @@ class PostViewHolder(
                 }.show()
             }
         }
+    }
+    fun ImageView.load(url: String,
+    @DrawableRes placeholder: Int = R.drawable.ic_loading_100dp,
+    @DrawableRes fallBack: Int = R.drawable.ic_error_100,
+    timeOutMs: Int = 10_000) {
+        Glide.with(this)
+            .load(url)
+            .placeholder(placeholder)
+            .error(fallBack)
+            .timeout(timeOutMs)
+            .circleCrop()
+            .into(this)
     }
 }
 

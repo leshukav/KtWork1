@@ -61,9 +61,9 @@ class FeedFragment : Fragment() {
             }
 
             override fun onPlay(post: Post) {
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(post.video)
-                startActivity(intent)
+//                val intent = Intent(Intent.ACTION_VIEW)
+//                intent.data = Uri.parse(post.video)
+//                startActivity(intent)
             }
 
         })
