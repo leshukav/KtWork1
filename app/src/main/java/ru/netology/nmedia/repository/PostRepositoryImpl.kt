@@ -41,7 +41,6 @@ class PostRepositoryImpl: PostRepository {
 
                override fun onFailure(call: Call<Unit>, t: Throwable) {
                    callback.onError(Exception(t))
-                   println(Exception(t.message))
                }
 
            })
@@ -70,6 +69,7 @@ class PostRepositoryImpl: PostRepository {
                 ) {
                     if (!response.isSuccessful) {
                         callback.onError(RuntimeException(response.message()))
+
                         return
                     }
 

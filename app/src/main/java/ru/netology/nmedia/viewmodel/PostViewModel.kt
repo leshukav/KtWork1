@@ -2,9 +2,15 @@ package ru.netology.nmedia.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import android.app.Application
+import android.content.Context
+import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.Post
+import ru.netology.nmedia.activity.FeedFragment
 import ru.netology.nmedia.model.FeedModel
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositoryImpl
@@ -78,7 +84,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                             }
 
                             override fun onError(e: Exception) {
-                                println(e.message)
+                                _data.value = FeedModel(error = true)
                             }
 
                         })
@@ -89,7 +95,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun likeById(id: Long) {
-
         repository.likeById(id, object : PostRepository.GetAllCallback<Post> {
             override fun onSuccess(post: Post) {
                 _data.value = _data.value?.copy(posts = _data.value?.posts.orEmpty()
@@ -104,7 +109,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Exception) {
-                print(e.message)
+                _data.value = FeedModel(error = true)
             }
         })
     }
@@ -125,7 +130,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Exception) {
-                print(e.message)
+                _data.value = FeedModel(error = true)
             }
         })
     }
@@ -137,7 +142,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Exception) {
-
+              _data.value = FeedModel(error = true)
             }
         })
     }
