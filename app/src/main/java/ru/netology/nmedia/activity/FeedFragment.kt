@@ -74,6 +74,10 @@ class FeedFragment : Fragment() {
         viewModel.data.observe(viewLifecycleOwner) { state ->
             adapter.submitList(state.posts)
             binding.progress.isVisible = state.loading
+            if (state.error) {
+                Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show()
+                binding.errorGroup.isVisible = false
+            }
             binding.errorGroup.isVisible = state.error
             binding.emptyText.isVisible = state.empty
         }
@@ -81,12 +85,6 @@ class FeedFragment : Fragment() {
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment2_to_newPostFragment)
-        }
-
-        viewModel.data.observe(viewLifecycleOwner) {
-            if (it.error) {
-                Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show()
-            }
         }
 
         viewModel.edited.observe(viewLifecycleOwner) {
