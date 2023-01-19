@@ -81,7 +81,9 @@ class FeedFragment : Fragment() {
             binding.errorGroup.isVisible = state.error
             binding.emptyText.isVisible = state.empty
         }
-
+        binding.retryButton.setOnClickListener {
+            viewModel.loadPosts()
+        }
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment2_to_newPostFragment)
