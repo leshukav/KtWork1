@@ -6,19 +6,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import retrofit2.Response.error
-import ru.netology.nmedia.Post
+import com.google.android.material.snackbar.Snackbar
+import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
-import ru.netology.nmedia.model.FeedModel
+import ru.netology.nmedia.model.FeedModelState
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
@@ -35,10 +34,10 @@ class FeedFragment : Fragment() {
 
         val adapter = PostAdapter(object : OnInteractionListener {
             override fun onLike(post: Post) {
-                if (post.likedByMe) {
-                    viewModel.unlikeById(post.id)
-                } else {
+                if (!post.likedByMe) {
                     viewModel.likeById(post.id)
+                } else {
+                    viewModel.unlikeById(post.id)
                 }
             }
 
@@ -56,7 +55,6 @@ class FeedFragment : Fragment() {
 
             override fun onRemove(post: Post) {
                 viewModel.removeById(post.id)
-                    //    viewModel.loadPosts()
             }
 
             override fun onEdit(post: Post) {
@@ -70,19 +68,48 @@ class FeedFragment : Fragment() {
             }
 
         })
+
         binding.list.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) { state ->
-            adapter.submitList(state.posts)
+        viewModel.state.observe(viewLifecycleOwner) { state ->
             binding.progress.isVisible = state.loading
             if (state.error) {
-                Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, R.string.error, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.retry_loading) {
+                        viewModel.loadPosts()
+                    }
+                    .show()
                 binding.errorGroup.isVisible = false
             }
-            binding.errorGroup.isVisible = state.error
-            binding.emptyText.isVisible = state.empty
+            if (state.likeError) {
+                Snackbar.make(binding.root, "Failed to connect. Try later", Snackbar.LENGTH_LONG)
+                    .setAction("Ok") {}
+                    .show()
+            }
+            if (state.removeError) {
+                Snackbar.make(binding.root, "Failed to connect. Try later", Snackbar.LENGTH_LONG)
+                    .setAction("Ok") {}
+                    .show()
+            }
+//            if (!state.addServer) {
+//                Snackbar.make(binding.root, "Post not server", Snackbar.LENGTH_LONG)
+//                    .setAction("Ok") {}
+//                    .show()
+//            }
+            binding.errorGroup.isVisible = false
+            binding.swiperefresh.isRefreshing = state.refreshing
+
         }
+
+        viewModel.data.observe(viewLifecycleOwner) { data ->
+            adapter.submitList(data.posts)
+            binding.emptyText.isVisible = data.empty
+        }
+
         binding.retryButton.setOnClickListener {
             viewModel.loadPosts()
+        }
+        binding.swiperefresh.setOnRefreshListener {
+            viewModel.refreshPosts()
         }
 
         binding.fab.setOnClickListener {
@@ -102,7 +129,9 @@ class FeedFragment : Fragment() {
         }
         return binding.root
     }
+
 }
+
 
 
 

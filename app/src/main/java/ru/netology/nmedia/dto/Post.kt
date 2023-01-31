@@ -1,4 +1,4 @@
-package ru.netology.nmedia
+package ru.netology.nmedia.dto
 
 import ru.netology.nmedia.enumeration.AttachmentType
 
@@ -10,6 +10,7 @@ data class Post(
     val published: Long,
     val likes: Int = 0,
     val likedByMe: Boolean,
+    var addServer: Boolean,
     var attachment: Attachment? = null,
 ) {
     val share: Int = 990
