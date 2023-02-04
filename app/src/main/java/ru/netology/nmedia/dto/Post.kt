@@ -10,7 +10,7 @@ data class Post(
     val published: Long,
     val likes: Int = 0,
     val likedByMe: Boolean,
-    var addServer: Boolean,
+    val hidden: Boolean = false,
     var attachment: Attachment? = null,
 ) {
     val share: Int = 990

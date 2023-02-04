@@ -50,60 +50,64 @@ class PostViewHolder(
     fun bind(post: Post) {
         binding.apply {
             fabPlay.hide()
-            author.text = post.author
-            if (post.authorAvatar != "" ) {
-                val url = "http://10.0.2.2:9999/avatars/${post.authorAvatar}"
-            binding.authorAvatar.load(url)
-            } else {
-                authorAvatar.setImageResource(R.drawable.ic_error_100)
-            }
-            if ((post.attachment?.type == AttachmentType.IMAGE) && (post.attachment?.type != null)) {
-               val url = "http://10.0.2.2:9999/images/${post.attachment?.url}"
-                Glide.with(binding.play)
-                    .load(url)
-                    .timeout(10_000)
-                    .into(binding.play)
-            }
-            publish.text = post.published.toString()
-            content.text = post.content
-            like.text = DisplayCount.logic(post.likes)
-            share.text = DisplayCount.logic(post.share)
-            visibility.text = DisplayCount.logic(post.viewEye)
-            like.isChecked = post.likedByMe
+            if (!post.hidden) {
+                author.text = post.author
+                if (post.authorAvatar != "") {
+                    val url = "http://10.0.2.2:9999/avatars/${post.authorAvatar}"
+                    binding.authorAvatar.load(url)
+                } else {
+                    authorAvatar.setImageResource(R.drawable.ic_error_100)
+                }
+                if ((post.attachment?.type == AttachmentType.IMAGE) && (post.attachment?.type != null)) {
+                    val url = "http://10.0.2.2:9999/images/${post.attachment?.url}"
+                    Glide.with(binding.play)
+                        .load(url)
+                        .timeout(10_000)
+                        .into(binding.play)
+                }
+                publish.text = post.published.toString()
+                content.text = post.content
+                like.text = DisplayCount.logic(post.likes)
+                share.text = DisplayCount.logic(post.share)
+                visibility.text = DisplayCount.logic(post.viewEye)
+                like.isChecked = post.likedByMe
 
-            play.setOnClickListener {
-                onInteractionListener.onPlay(post)
-            }
-            fabPlay.setOnClickListener {
-                onInteractionListener.onPlay(post)
-            }
+
+                play.setOnClickListener {
+                    onInteractionListener.onPlay(post)
+                }
+                fabPlay.setOnClickListener {
+                    onInteractionListener.onPlay(post)
+                }
 //            content.setOnClickListener{
 //               onInteractionListener.onPostFragment(post)
 //            }
-            like.setOnClickListener {
-                onInteractionListener.onLike(post)
-            }
-            share.setOnClickListener {
-                onInteractionListener.onShare(post)
-            }
-            menu.setOnClickListener {
-                PopupMenu(it.context, it).apply {
-                    inflate(R.menu.option_post)
-                    setOnMenuItemClickListener { item ->
-                        when (item.itemId){
-                            R.id.remove -> {
-                                onInteractionListener.onRemove(post)
-                                true
-                            }
-                            R.id.edit -> {
-                                onInteractionListener.onEdit(post)
-                                true
-                            }
-                            else -> false
-                        }
+                like.setOnClickListener {
+                    onInteractionListener.onLike(post)
+                }
+                share.setOnClickListener {
+                    onInteractionListener.onShare(post)
+                }
 
-                    }
-                }.show()
+                menu.setOnClickListener {
+                    PopupMenu(it.context, it).apply {
+                        inflate(R.menu.option_post)
+                        setOnMenuItemClickListener { item ->
+                            when (item.itemId) {
+                                R.id.remove -> {
+                                    onInteractionListener.onRemove(post)
+                                    true
+                                }
+                                R.id.edit -> {
+                                    onInteractionListener.onEdit(post)
+                                    true
+                                }
+                                else -> false
+                            }
+
+                        }
+                    }.show()
+                }
             }
         }
     }

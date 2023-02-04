@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.R
@@ -72,10 +73,12 @@ class FeedFragment : Fragment() {
         binding.list.adapter = adapter
         viewModel.state.observe(viewLifecycleOwner) { state ->
             binding.progress.isVisible = state.loading
+
             if (state.error) {
                 Snackbar.make(binding.root, R.string.error, Snackbar.LENGTH_LONG)
                     .setAction(R.string.retry_loading) {
                         viewModel.loadPosts()
+
                     }
                     .show()
                 binding.errorGroup.isVisible = false
@@ -90,19 +93,37 @@ class FeedFragment : Fragment() {
                     .setAction("Ok") {}
                     .show()
             }
-//            if (!state.addServer) {
-//                Snackbar.make(binding.root, "Post not server", Snackbar.LENGTH_LONG)
-//                    .setAction("Ok") {}
-//                    .show()
-//            }
+
             binding.errorGroup.isVisible = false
             binding.swiperefresh.isRefreshing = state.refreshing
 
         }
 
+        viewModel.newerCount.observe(viewLifecycleOwner) { count ->
+            if (count > 0) {
+                binding.chip.isVisible = true
+            }
+            println("Newer couunt $count")
+        }
+
+
+
         viewModel.data.observe(viewLifecycleOwner) { data ->
             adapter.submitList(data.posts)
             binding.emptyText.isVisible = data.empty
+        }
+
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0) {
+                    binding.list.smoothScrollToPosition(0)
+                }
+            }
+        })
+
+        binding.chip.setOnClickListener {
+            binding.chip.isVisible = false
+            viewModel.loadNewer()
         }
 
         binding.retryButton.setOnClickListener {

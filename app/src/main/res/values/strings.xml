@@ -19,4 +19,5 @@
     <string name="retry_loading">Load Posts</string>
     <string name="empty_posts">There are no posts.\nIf you create a new post, it will appear here</string>
     <string name="error">Something  wrong. Try  later</string>
+    <string name="you_have_new_posts">You have new posts</string>
 </resources>
