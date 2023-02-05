@@ -114,7 +114,7 @@ class FeedFragment : Fragment() {
         }
 
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
-            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 if (positionStart == 0) {
                     binding.list.smoothScrollToPosition(0)
                 }

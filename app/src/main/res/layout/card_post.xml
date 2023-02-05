@@ -87,6 +87,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/background_light"
         app:fabSize="mini"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/play"
         app:layout_constraintEnd_toEndOf="@id/play"
         app:layout_constraintStart_toStartOf="@id/play"

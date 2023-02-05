@@ -48,9 +48,9 @@ class PostViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(post: Post) {
+        if (!post.hidden) {
         binding.apply {
-            fabPlay.hide()
-            if (!post.hidden) {
+     //       fabPlay.hide()
                 author.text = post.author
                 if (post.authorAvatar != "") {
                     val url = "http://10.0.2.2:9999/avatars/${post.authorAvatar}"
