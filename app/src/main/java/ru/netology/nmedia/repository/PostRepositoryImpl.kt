@@ -31,7 +31,6 @@ class PostRepositoryImpl(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             postDao.insert(body.toEntity().map {
                 it.copy(hidden = true)
@@ -58,6 +57,25 @@ class PostRepositoryImpl(
         } catch (e: Exception) {
             throw UnknownError
         }
+    }
+
+    override suspend fun refresh() {
+        try {
+            val response = PostsApi.retrofitService.getAll()
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val posts = response.body().orEmpty()
+            postDao.insertHidden(posts.map(PostEntity::fromDto) )
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun unreadCount(): Int {
+        return postDao.getUnreadCount()
     }
 
     override suspend fun loadNewer() {

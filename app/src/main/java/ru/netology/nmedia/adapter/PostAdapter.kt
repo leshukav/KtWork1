@@ -48,7 +48,6 @@ class PostViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(post: Post) {
-        if (!post.hidden) {
         binding.apply {
      //       fabPlay.hide()
                 author.text = post.author
@@ -109,7 +108,7 @@ class PostViewHolder(
                     }.show()
                 }
             }
-        }
+
     }
     fun ImageView.load(url: String,
     @DrawableRes placeholder: Int = R.drawable.ic_loading_100dp,

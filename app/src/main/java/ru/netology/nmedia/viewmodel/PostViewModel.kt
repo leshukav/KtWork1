@@ -50,6 +50,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         loadPosts()
     }
 
+    suspend fun unreadCount(): Int {
+    return repository.unreadCount()
+    }
+
     fun loadPosts() {
         _state.value = FeedModelState(loading = true)
         viewModelScope.launch {
@@ -77,7 +81,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         _state.value = FeedModelState(refreshing = true)
         viewModelScope.launch {
             try {
-                repository.getAll()
+                repository.refresh()                //getAll()
                 _state.value = FeedModelState(refreshing = false)
             } catch (e: Exception) {
                 _state.value = FeedModelState(error = true)

@@ -102,6 +102,7 @@ class FeedFragment : Fragment() {
         viewModel.newerCount.observe(viewLifecycleOwner) { count ->
             if (count > 0) {
                 binding.chip.isVisible = true
+                binding.chip.text = "You have new $count posts"
             }
             println("Newer couunt $count")
         }
