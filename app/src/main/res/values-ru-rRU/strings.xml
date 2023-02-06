@@ -21,4 +21,8 @@
     <string name="empty_posts">There are no posts.\nIf you create a new post, it will appear here</string>
     <string name="error">Что-то не так. Попробуй позже</string>
     <string name="you_have_new_posts">You have new posts</string>
+    <string name="description_photo">Photo</string>
+    <string name="description_select_photo">Select photo</string>
+    <string name="description_take_photo">Take photo</string>
+    <string name="remove">Remove</string>
 </resources>

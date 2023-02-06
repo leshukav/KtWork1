@@ -1,6 +1,7 @@
 package ru.netology.nmedia.viewmodel
 
 import android.app.Application
+import android.net.Uri
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -10,9 +11,11 @@ import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.model.FeedModel
 import ru.netology.nmedia.model.FeedModelState
+import ru.netology.nmedia.model.MediaModel
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositoryImpl
 import ru.netology.nmedia.util.SingleLiveEvent
+import java.io.File
 
 
 private val empty = Post(
@@ -46,8 +49,20 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     val postCreated: LiveData<Unit>
         get() = _postCreated
 
+    private val _media = MutableLiveData<MediaModel?>(null)
+    val media: MutableLiveData<MediaModel?>
+        get() = _media
+
     init {
         loadPosts()
+    }
+
+    fun changePhoto(uri: Uri?, file: File?) {
+        _media.value = MediaModel(uri, file)
+    }
+
+    fun clearPhoto() {
+        _media.value = null
     }
 
     fun loadPosts() {
@@ -103,16 +118,25 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         val text = content.trim()
         val post = edited.value
         if (post != null) {
-            _postCreated.value = Unit
             viewModelScope.launch {
                 try {
-                    repository.save(post = post.copy(content = text))
+                    when (val media = media.value) {
+                        null -> repository.save(post = post.copy(content = text))
+                        else -> {
+                            repository.saveWithAttachment(post = post.copy(content = text), media)
+                        }
+                    }
+                    _postCreated.value = Unit
+                    edited.value = empty
+                    clearPhoto()
+                    _state.value = FeedModelState()
+              //      repository.save(post = post.copy(content = text))
                 } catch (e: Exception) {
                     _state.value = FeedModelState(error = true)
                 }
             }
         }
-        edited.value = empty
+
     }
 
     fun likeById(id: Long) {

@@ -4,18 +4,25 @@ package ru.netology.nmedia.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okio.IOException
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.api.PostsApi
 import retrofit2.HttpException
+import ru.netology.nmedia.dto.Attachment
+import ru.netology.nmedia.dto.Media
+import ru.netology.nmedia.dto.MediaUpload
 import ru.netology.nmedia.entity.PostEntity
 import ru.netology.nmedia.entity.toDto
 import ru.netology.nmedia.entity.toEntity
+import ru.netology.nmedia.enumeration.AttachmentType
 import ru.netology.nmedia.error.ApiError
 import ru.netology.nmedia.error.AppError
 import ru.netology.nmedia.error.NetworkError
 import ru.netology.nmedia.error.UnknownError
+import ru.netology.nmedia.model.MediaModel
 
 
 class PostRepositoryImpl(
@@ -62,6 +69,43 @@ class PostRepositoryImpl(
 
     override suspend fun loadNewer() {
         postDao.readAll()
+    }
+
+    override suspend fun saveWithAttachment(post: Post, mediaModel: MediaModel) {
+        try {
+            val media = upload(mediaModel)
+            val response = PostsApi.retrofitService.save(
+                post.copy(attachment = Attachment(media.id, AttachmentType.IMAGE))
+            )
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            postDao.insert(PostEntity.fromDto(body))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun upload(upload: MediaModel): Media {
+        try {
+            val media = MultipartBody.Part.createFormData(
+                "file", upload.file?.name, upload.file?.asRequestBody() ?: throw UnknownError
+            )
+
+            val response = PostsApi.retrofitService.upload(media)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            return response.body() ?: throw ApiError(response.code(), response.message())
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
     }
 
     override suspend fun getById(id: Long) {
