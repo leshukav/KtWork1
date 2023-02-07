@@ -88,11 +88,15 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    suspend fun unreadCount(): Int {
+        return repository.unreadCount()
+    }
+
     fun refreshPosts() {
         _state.value = FeedModelState(refreshing = true)
         viewModelScope.launch {
             try {
-                repository.getAll()
+                repository.refresh()     //getAll()
                 _state.value = FeedModelState(refreshing = false)
             } catch (e: Exception) {
                 _state.value = FeedModelState(error = true)
@@ -130,7 +134,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                     edited.value = empty
                     clearPhoto()
                     _state.value = FeedModelState()
-              //      repository.save(post = post.copy(content = text))
+                    //      repository.save(post = post.copy(content = text))
                 } catch (e: Exception) {
                     _state.value = FeedModelState(error = true)
                 }

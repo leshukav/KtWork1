@@ -4,17 +4,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import ru.netology.nmedia.R
-import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
+import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
 import ru.netology.nmedia.databinding.ActivityAppBinding
 
 class AppActivity : AppCompatActivity() {
+
+    lateinit var appBarConfiquration: AppBarConfiguration
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityAppBinding.inflate(layoutInflater)
@@ -33,9 +38,12 @@ class AppActivity : AppCompatActivity() {
                     .show()
                 return@let
             }
+
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.conteiner) as NavHostFragment
             navHostFragment.navController.navigate(R.id.action_feedFragment2_to_newPostFragment,
             Bundle().apply { textArg = text })
+//            appBarConfiquration = AppBarConfiguration(navController.graph)
+//            setupActionBarWithNavController(navController, appBarConfiquration)
         }
         checkGoogleApiAvailability()
     }
@@ -57,4 +65,10 @@ class AppActivity : AppCompatActivity() {
             println(it)
         }
     }
+
+//    override fun onSupportNavigateUp(): Boolean {
+//        val navController = findNavController(R.id.action_feedFragment2_to_newPostFragment)
+//        return  navController.navigateUp(appBarConfiquration)
+//        super.onSupportNavigateUp()
+//    }
 }

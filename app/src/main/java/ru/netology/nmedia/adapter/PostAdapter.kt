@@ -23,7 +23,7 @@ interface OnInteractionListener {
     fun onShare(post: Post)
     fun onRemove(post: Post)
     fun onEdit(post: Post)
-    fun onPlay(post: Post)
+    fun onImage(post: Post)
 //    fun onPostFragment(post: Post)
 }
 
@@ -59,12 +59,13 @@ class PostViewHolder(
                     authorAvatar.setImageResource(R.drawable.ic_error_100)
                 }
                 if ((post.attachment?.type == AttachmentType.IMAGE) && (post.attachment?.type != null)) {
-                    val url = "http://10.0.2.2:9999/images/${post.attachment?.url}"
-                    Glide.with(binding.play)
+                    val url = "http://10.0.2.2:9999/media/${post.attachment?.url}"
+                    Glide.with(binding.image)
                         .load(url)
                         .timeout(10_000)
-                        .into(binding.play)
+                        .into(binding.image)
                 }
+
                 publish.text = post.published.toString()
                 content.text = post.content
                 like.text = DisplayCount.logic(post.likes)
@@ -73,11 +74,11 @@ class PostViewHolder(
                 like.isChecked = post.likedByMe
 
 
-                play.setOnClickListener {
-                    onInteractionListener.onPlay(post)
+                image.setOnClickListener {
+                    onInteractionListener.onImage(post)
                 }
                 fabPlay.setOnClickListener {
-                    onInteractionListener.onPlay(post)
+                    onInteractionListener.onImage(post)
                 }
 //            content.setOnClickListener{
 //               onInteractionListener.onPostFragment(post)

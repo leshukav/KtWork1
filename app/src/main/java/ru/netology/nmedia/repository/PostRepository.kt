@@ -9,8 +9,10 @@ import ru.netology.nmedia.model.MediaModel
 interface PostRepository {
     val data: Flow<List<Post>>
     fun getNewerCount(id: Long): Flow<Int>
+    suspend fun unreadCount(): Int
     suspend fun getAll()
     suspend fun loadNewer()
+    suspend fun refresh()
     suspend fun saveWithAttachment(post: Post, media: MediaModel)
     suspend fun upload(upload: MediaModel): Media
     suspend fun getById(id: Long)

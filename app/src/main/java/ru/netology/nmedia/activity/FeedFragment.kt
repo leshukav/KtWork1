@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.R
-import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
+import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
-import ru.netology.nmedia.model.FeedModelState
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
@@ -62,7 +61,12 @@ class FeedFragment : Fragment() {
                 viewModel.edit(post)
             }
 
-            override fun onPlay(post: Post) {
+            override fun onImage(post: Post) {
+            findNavController().navigate(R.id.action_feedFragment2_to_imageFragment,
+                Bundle().apply {
+                textArg = post.attachment?.url.toString()
+            })
+
 //                val intent = Intent(Intent.ACTION_VIEW)
 //                intent.data = Uri.parse(post.video)
 //                startActivity(intent)
@@ -102,6 +106,7 @@ class FeedFragment : Fragment() {
         viewModel.newerCount.observe(viewLifecycleOwner) { count ->
             if (count > 0) {
                 binding.chip.isVisible = true
+                binding.chip.text = "You have new $count posts"
             }
             println("Newer couunt $count")
         }

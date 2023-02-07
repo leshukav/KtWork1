@@ -19,30 +19,30 @@ data class PostEntity(
     val likedByMe: Boolean,
     val hidden: Boolean = false,
     @Embedded
-    var attachment: AttachmentEmbeddable?,
+    var attachment: Attachment?,
 
 ) {
-    fun toDto() = Post(id, author, authorAvatar, content, published,likes,likedByMe,hidden, attachment?.toDto())
+    fun toDto() = Post(id, author, authorAvatar, content, published,likes,likedByMe,hidden, attachment)
 
     companion object {
         fun fromDto(dto: Post) =
-            PostEntity(dto.id, dto.author, dto.authorAvatar, dto.content, dto.published, dto.likes, dto.likedByMe, dto.hidden, AttachmentEmbeddable.fromDto(dto.attachment))
+            PostEntity(dto.id, dto.author, dto.authorAvatar, dto.content, dto.published, dto.likes, dto.likedByMe, dto.hidden, dto.attachment)
 
     }
 }
 
-data class AttachmentEmbeddable(
-    var url: String,
-    var type: AttachmentType,
-) {
-    fun toDto() = Attachment(url, type)
-
-    companion object {
-        fun fromDto(dto: Attachment?) = dto?.let {
-            AttachmentEmbeddable(it.url, it.type)
-        }
-    }
-}
+//data class Attachment(
+//    var url: String,
+//    var type: AttachmentType,
+//) {
+//    fun toDto() = Attachment(url, type)
+//
+//    companion object {
+//        fun fromDto(dto: Attachment?) = dto?.let {
+//            Attachment(it.url, it.type)
+//        }
+//    }
+//}
 
 fun List<PostEntity>.toDto(): List<Post> = map(PostEntity::toDto)
 fun List<Post>.toEntity(): List<PostEntity> = map(PostEntity::fromDto)

@@ -73,7 +73,7 @@
         tools:text="@sample/post.json/data/content" />
 
     <ImageView
-        android:id="@+id/play"
+        android:id="@+id/image"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,10 +88,10 @@
         android:backgroundTint="@android:color/background_light"
         app:fabSize="mini"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@id/play"
-        app:layout_constraintEnd_toEndOf="@id/play"
-        app:layout_constraintStart_toStartOf="@id/play"
-        app:layout_constraintTop_toTopOf="@id/play"
+        app:layout_constraintBottom_toBottomOf="@id/image"
+        app:layout_constraintEnd_toEndOf="@id/image"
+        app:layout_constraintStart_toStartOf="@id/image"
+        app:layout_constraintTop_toTopOf="@id/image"
         app:srcCompat="@drawable/ic_play_48" />
 
 
@@ -100,7 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="content, play" />
+        app:constraint_referenced_ids="content, image" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/like"

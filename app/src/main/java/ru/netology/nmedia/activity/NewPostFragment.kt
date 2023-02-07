@@ -18,15 +18,14 @@ import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.AndroidUtils
 import ru.netology.nmedia.R
 import ru.netology.nmedia.StringArg
+import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 
 class NewPostFragment : Fragment() {
 
-    companion object {
-        var Bundle.textArg by StringArg
-    }
+
 
     val viewModel by viewModels<PostViewModel>(
         ownerProducer = ::requireParentFragment
@@ -97,7 +96,7 @@ class NewPostFragment : Fragment() {
                             viewModel.changeContentAndSave(text)
                         }
                         AndroidUtils.hideKeyboard(requireView())
-                        viewModel.loadPosts()
+                        viewModel.loadNewer()
                         findNavController().navigateUp()
                         true
                     }
