@@ -2,6 +2,7 @@ package ru.netology.nmedia.adapter
 
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
@@ -24,7 +25,6 @@ interface OnInteractionListener {
     fun onRemove(post: Post)
     fun onEdit(post: Post)
     fun onImage(post: Post)
-//    fun onPostFragment(post: Post)
 }
 
 class PostAdapter(
@@ -49,8 +49,8 @@ class PostViewHolder(
 
     fun bind(post: Post) {
         if (!post.hidden) {
-        binding.apply {
-     //       fabPlay.hide()
+            binding.apply {
+                //       fabPlay.hide()
                 author.text = post.author
                 if (post.authorAvatar != "") {
                     val url = "http://10.0.2.2:9999/avatars/${post.authorAvatar}"
@@ -59,11 +59,14 @@ class PostViewHolder(
                     authorAvatar.setImageResource(R.drawable.ic_error_100)
                 }
                 if ((post.attachment?.type == AttachmentType.IMAGE) && (post.attachment?.type != null)) {
+                    image.visibility = View.VISIBLE
                     val url = "http://10.0.2.2:9999/media/${post.attachment?.url}"
                     Glide.with(binding.image)
                         .load(url)
                         .timeout(10_000)
                         .into(binding.image)
+                } else {
+                    image.visibility = View.GONE
                 }
 
                 publish.text = post.published.toString()
@@ -80,9 +83,7 @@ class PostViewHolder(
                 fabPlay.setOnClickListener {
                     onInteractionListener.onImage(post)
                 }
-//            content.setOnClickListener{
-//               onInteractionListener.onPostFragment(post)
-//            }
+
                 like.setOnClickListener {
                     onInteractionListener.onLike(post)
                 }
@@ -112,10 +113,13 @@ class PostViewHolder(
             }
         }
     }
-    fun ImageView.load(url: String,
-    @DrawableRes placeholder: Int = R.drawable.ic_loading_100dp,
-    @DrawableRes fallBack: Int = R.drawable.ic_error_100,
-    timeOutMs: Int = 10_000) {
+
+    fun ImageView.load(
+        url: String,
+        @DrawableRes placeholder: Int = R.drawable.ic_loading_100dp,
+        @DrawableRes fallBack: Int = R.drawable.ic_error_100,
+        timeOutMs: Int = 10_000
+    ) {
         Glide.with(this)
             .load(url)
             .placeholder(placeholder)

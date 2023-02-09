@@ -25,4 +25,7 @@
     <string name="description_select_photo">Select photo</string>
     <string name="description_take_photo">Take photo</string>
     <string name="remove">Remove</string>
+    <string name="fragment_new_post">New Post</string>
+    <string name="fragment_image">Image</string>
+    <string name="fragment_feed">Feed</string>
 </resources>

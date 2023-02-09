@@ -17,14 +17,12 @@ import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.AndroidUtils
 import ru.netology.nmedia.R
-import ru.netology.nmedia.StringArg
 import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 
 class NewPostFragment : Fragment() {
-
 
 
     val viewModel by viewModels<PostViewModel>(
@@ -83,9 +81,9 @@ class NewPostFragment : Fragment() {
                 .createIntent(pickPhotoLauncher::launch)
         }
 
-        requireActivity().addMenuProvider(object : MenuProvider{
+        requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_new_post,menu)
+                menuInflater.inflate(R.menu.menu_new_post, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
@@ -100,21 +98,20 @@ class NewPostFragment : Fragment() {
                         findNavController().navigateUp()
                         true
                     }
-                  else -> false
+                    else -> false
                 }
-
 
         }, viewLifecycleOwner)
 
-        binding.clear.setOnClickListener{
+        binding.clear.setOnClickListener {
             viewModel.clearPhoto()
         }
 
         viewModel.postCreated.observe(viewLifecycleOwner) {
-        //    findNavController().navigateUp()
+            //    findNavController().navigateUp()
         }
 
-        viewModel.media.observe(viewLifecycleOwner){media ->
+        viewModel.media.observe(viewLifecycleOwner) { media ->
             if (media == null) {
                 binding.photoContainer.isGone = true
                 return@observe

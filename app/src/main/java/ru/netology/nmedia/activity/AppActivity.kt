@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -14,12 +15,12 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFI
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import ru.netology.nmedia.R
-import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
 import ru.netology.nmedia.databinding.ActivityAppBinding
 
 class AppActivity : AppCompatActivity() {
 
     lateinit var appBarConfiquration: AppBarConfiguration
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityAppBinding.inflate(layoutInflater)
@@ -39,15 +40,13 @@ class AppActivity : AppCompatActivity() {
                 return@let
             }
 
-            val navHostFragment = supportFragmentManager.findFragmentById(R.id.conteiner) as NavHostFragment
-            navHostFragment.navController.navigate(R.id.action_feedFragment2_to_newPostFragment,
-            Bundle().apply { textArg = text })
-//            navHostFragment.navController.navigate(R.id.action_feedFragment2_to_imageFragment,
-//            Bundle().apply { textArg = text })
-
-//            appBarConfiquration = AppBarConfiguration(navController.graph)
-//            setupActionBarWithNavController(navController, appBarConfiquration)
         }
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.conteiner) as NavHostFragment
+            val navController = navHostFragment.navController
+             appBarConfiquration = AppBarConfiguration(navController.graph)
+             setupActionBarWithNavController(navController, appBarConfiquration)
+
+
         checkGoogleApiAvailability()
     }
     private fun checkGoogleApiAvailability() {
@@ -69,9 +68,9 @@ class AppActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onSupportNavigateUp(): Boolean {
-//        val navController = findNavController(R.id.action_feedFragment2_to_newPostFragment)
-//        return  navController.navigateUp(appBarConfiquration)
-//        super.onSupportNavigateUp()
-//    }
+   override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.conteiner)
+        return  navController.navigateUp(appBarConfiquration)
+        super.onSupportNavigateUp()
+    }
 }
