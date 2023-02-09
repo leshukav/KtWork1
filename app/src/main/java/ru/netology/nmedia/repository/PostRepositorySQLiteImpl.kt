@@ -35,8 +35,8 @@ class PostRepositorySQLiteImpl(
         dao.likeById(id)
         posts = posts.map {
             if (it.id != id) it else it.copy(
-                likeByMy = !it.likeByMy,
-                like = if (it.likeByMy) it.like - 1 else it.like + 1
+                likeByMe = !it.likeByMe,
+                like = if (it.likeByMe) it.like - 1 else it.like + 1
             )
         }
         data.value = posts
