@@ -3,23 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ImageFragment">
+    android:background="@color/design_default_color_primary_dark"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- TODO: Update blank fragment layout-->
     <ImageView
         android:id="@+id/imageFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         tools:srcCompat="@tools:sample/avatars[5]">
     </ImageView>
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="@tools:sample/lorem/random">
-
-    </TextView>
 
 </FrameLayout>

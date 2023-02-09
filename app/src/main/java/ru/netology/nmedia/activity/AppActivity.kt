@@ -42,6 +42,9 @@ class AppActivity : AppCompatActivity() {
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.conteiner) as NavHostFragment
             navHostFragment.navController.navigate(R.id.action_feedFragment2_to_newPostFragment,
             Bundle().apply { textArg = text })
+//            navHostFragment.navController.navigate(R.id.action_feedFragment2_to_imageFragment,
+//            Bundle().apply { textArg = text })
+
 //            appBarConfiquration = AppBarConfiguration(navController.graph)
 //            setupActionBarWithNavController(navController, appBarConfiquration)
         }

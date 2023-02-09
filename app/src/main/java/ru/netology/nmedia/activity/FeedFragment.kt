@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -62,10 +63,11 @@ class FeedFragment : Fragment() {
             }
 
             override fun onImage(post: Post) {
+             val url = post.attachment?.url.toString()
             findNavController().navigate(R.id.action_feedFragment2_to_imageFragment,
-                Bundle().apply {
-                textArg = post.attachment?.url.toString()
-            })
+              Bundle().apply {
+                  textArg = url
+              })
 
 //                val intent = Intent(Intent.ACTION_VIEW)
 //                intent.data = Uri.parse(post.video)
