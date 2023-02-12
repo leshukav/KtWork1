@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
+import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.entity.PostEntity
 
 @Dao
@@ -18,6 +19,9 @@ interface PostDao {
 
     @Query("SELECT * FROM PostEntity ORDER BY id DESC LIMIT 1")
     suspend fun getLastPost(): PostEntity
+
+//    @Query("SELECT * FROM  PostEntity WHERE id = :id")
+//    suspend fun getPost(id: Long): Post
 
     @Query("SELECT COUNT(*) == 0 FROM PostEntity")
     suspend fun isEmpty(): Boolean

@@ -72,8 +72,8 @@ class PostViewHolder(
                 publish.text = post.published.toString()
                 content.text = post.content
                 like.text = DisplayCount.logic(post.likes)
-                share.text = DisplayCount.logic(post.share)
-                visibility.text = DisplayCount.logic(post.viewEye)
+                share.text = DisplayCount.logic(990)
+                visibility.text = DisplayCount.logic(1)
                 like.isChecked = post.likedByMe
 
 

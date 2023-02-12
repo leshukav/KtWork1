@@ -13,9 +13,9 @@ data class Post(
     val hidden: Boolean = false,
     var attachment: Attachment? = null,
 ) {
-    val share: Int = 990
-    val viewEye: Int = 1
-    val video: String = "https://www.youtube.com/watch?v=vJ8unmdwT3M"
+//    val share: Int = 990
+//   val viewEye: Int = 1
+ //   val video: String = "https://www.youtube.com/watch?v=vJ8unmdwT3M"
 }
 
 

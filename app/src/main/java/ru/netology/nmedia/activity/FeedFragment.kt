@@ -61,7 +61,7 @@ class FeedFragment : Fragment() {
                 if (post.id == 0L) {
                     return
                 }
-                val text = post.content
+                val text = post.content   //content
                 findNavController().navigate(
                     R.id.action_feedFragment2_to_newPostFragment,
                     Bundle().apply {

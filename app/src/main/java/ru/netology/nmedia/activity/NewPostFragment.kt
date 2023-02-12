@@ -4,6 +4,7 @@ import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.content.Context
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
 import androidx.core.view.MenuProvider
@@ -12,13 +13,17 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.AndroidUtils
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
+import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
+import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.repository.PostRepositoryImpl
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 
@@ -35,11 +40,21 @@ class NewPostFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-
         val binding = FragmentNewPostBinding.inflate(inflater, container, false)
 
         arguments?.textArg?.let {
             binding.edit.setText(it)
+        }
+        viewModel.edited.observe(viewLifecycleOwner){ post ->
+        //    binding.edit.setText(post.content)
+            binding.photoContainer.isVisible = true
+            val url = post.attachment?.url
+            val uri: Uri = Uri.parse("http://10.0.2.2:9999/media/$url")
+            Glide.with(binding.preview)
+                .load(uri)
+                .timeout(10_000)
+                .into(binding.preview)
+            binding.clear.isVisible = true
         }
 
         val pickPhotoLauncher =

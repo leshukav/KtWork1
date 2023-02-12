@@ -10,6 +10,8 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import ru.netology.nmedia.R
+import ru.netology.nmedia.db.AppDb
+import ru.netology.nmedia.repository.PostRepositoryImpl
 import kotlin.random.Random
 
 
@@ -62,7 +64,7 @@ class FCMService() : FirebaseMessagingService() {
     }
 
     private fun handlePost() {
-//        val dao = PostRepositoryImpl(AppDb.getInstance(context = application).postDao())
+        val dao = PostRepositoryImpl(AppDb.getInstance(context = application).postDao())
 //        val post = dao.getLastPost()
 //
 //        val notification = NotificationCompat.Builder(this, channelId)
