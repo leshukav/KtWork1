@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,6 +19,7 @@ import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
+import ru.netology.nmedia.viewmodel.AuthViewModel
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
@@ -30,6 +32,8 @@ class FeedFragment : Fragment() {
         val viewModel by viewModels<PostViewModel>(
             ownerProducer = ::requireParentFragment
         )
+        val authViewModel by viewModels<AuthViewModel>()
+
         val binding = FragmentFeedBinding.inflate(inflater, container, false)
 
         val adapter = PostAdapter(object : OnInteractionListener {
@@ -92,14 +96,17 @@ class FeedFragment : Fragment() {
                 Snackbar.make(binding.root, R.string.error, Snackbar.LENGTH_LONG)
                     .setAction(R.string.retry_loading) {
                         viewModel.loadPosts()
-
                     }
                     .show()
                 binding.errorGroup.isVisible = false
             }
             if (state.likeError) {
-                Snackbar.make(binding.root, "Failed to connect. Try later", Snackbar.LENGTH_LONG)
-                    .setAction("Ok") {}
+                Snackbar.make(binding.root, "You must register", Snackbar.LENGTH_LONG)
+                    .setAction("Ok") {
+                        findNavController().navigate(R.id.action_feedFragment2_to_dialogFragment,
+                            Bundle().apply
+                            { textArg = "loginGroup" })
+                    }
                     .show()
             }
             if (state.removeError) {
@@ -145,13 +152,19 @@ class FeedFragment : Fragment() {
             viewModel.loadPosts()
         }
         binding.swiperefresh.setOnRefreshListener {
+            println(authViewModel.authorized)
             viewModel.refreshPosts()
         }
 
         binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_feedFragment2_to_newPostFragment)
+            if (authViewModel.authorized) {
+                findNavController().navigate(R.id.action_feedFragment2_to_newPostFragment)
+            } else {
+                findNavController().navigate(R.id.action_feedFragment2_to_dialogFragment,
+                    Bundle().apply
+                    { textArg = "loginGroup" })
+            }
         }
-
         return binding.root
     }
 

@@ -5,6 +5,7 @@ import ru.netology.nmedia.enumeration.AttachmentType
 data class Post(
     val id: Long,
     val author: String,
+    val authorId: Long,
     val authorAvatar: String = "",
     val content: String,
     val published: Long,
@@ -12,6 +13,7 @@ data class Post(
     val likedByMe: Boolean,
     val hidden: Boolean = false,
     var attachment: Attachment? = null,
+    val ownedByMe:Boolean = false,
 ) {
 //    val share: Int = 990
 //   val viewEye: Int = 1

@@ -11,6 +11,7 @@ import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.api.PostsApi
 import retrofit2.HttpException
+import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dto.Attachment
 import ru.netology.nmedia.dto.Media
 import ru.netology.nmedia.dto.MediaUpload
@@ -74,7 +75,7 @@ class PostRepositoryImpl(
                 throw ApiError(response.code(), response.message())
             }
             val posts = response.body().orEmpty()
-            postDao.insertHidden(posts.map(PostEntity::fromDto) )
+            postDao.insertHidden(posts.map(PostEntity::fromDto))
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -139,6 +140,7 @@ class PostRepositoryImpl(
     override suspend fun removeById(id: Long) {
         postDao.removeById(id)
         PostsApi.retrofitService.removeById(id)
+
     }
 
     override suspend fun saveOld(post: Post) {
@@ -197,6 +199,34 @@ class PostRepositoryImpl(
     override suspend fun cancelLike(id: Long) {
         postDao.likeById(id)
     }
+
+    override suspend fun authorization(login: String, pass: String) {
+        try {
+            val response = PostsApi.retrofitService.updateUser(login, pass)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val field = response.body() ?: throw HttpException(response)
+            AppAuth.getInstance().setAuth(field.id, field.token)
+        } catch (e: IOException) {
+            throw NetworkError
+        }
+
+    }
+
+    override suspend fun registration(name: String, login: String, pass: String) {
+        try {
+            val response = PostsApi.retrofitService.registerUser(login, pass, name)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val field = response.body() ?: throw HttpException(response)
+            AppAuth.getInstance().setAuth(field.id, field.token)
+        } catch (e: IOException) {
+            throw NetworkError
+        }
+    }
+
 
     override suspend fun shareById(id: Long) {
         // TODO: do this in homework

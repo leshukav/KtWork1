@@ -9,8 +9,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import ru.netology.nmedia.BuildConfig
+import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dto.Media
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.model.AuthModel
 
 private const val BASE_URL = "http://10.0.2.2:9999/api/slow/"
 
@@ -22,6 +24,14 @@ private val logging = HttpLoggingInterceptor().apply {
 
 private val okhttp = OkHttpClient.Builder()
     .addInterceptor(logging)
+    .addInterceptor {chain ->
+        val request = AppAuth.getInstance().data.value?.token?.let {
+            chain.request().newBuilder()
+                .addHeader("Authorization", it)
+                .build()
+        } ?: chain.request()
+        chain.proceed(request)
+    }
     .build()
 
 private val retrofit = Retrofit.Builder()
@@ -55,6 +65,14 @@ interface PostsApiService {
 
     @DELETE("posts/{id}/likes")
     suspend fun unlikeById(@Path("id") id: Long): Response<Post>
+
+    @FormUrlEncoded
+    @POST("users/authentication")
+    suspend fun updateUser(@Field("login") login: String, @Field("pass") pass: String): Response<AuthModel>
+
+    @FormUrlEncoded
+    @POST("users/registration")
+    suspend fun registerUser(@Field("login") login: String, @Field("pass") pass: String, @Field("name") name: String): Response<AuthModel>
 }
 
 object PostsApi {

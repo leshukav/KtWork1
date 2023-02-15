@@ -23,4 +23,6 @@ interface PostRepository {
     suspend fun save(post: Post)
     suspend fun saveOld(post: Post)
     suspend fun cancelLike(id: Long)
+    suspend fun authorization(login: String, pass: String)
+    suspend fun registration(name: String, login: String, pass: String)
 }
