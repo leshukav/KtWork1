@@ -17,7 +17,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         .asLiveData(Dispatchers.Default)
 
     val authorized: Boolean
-        get() = data.value != null
+        get() = AppAuth.getInstance().data.value != null
 
     private val _state = MutableLiveData(AuthModelState())
     val state: LiveData<AuthModelState>

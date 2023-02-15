@@ -18,13 +18,20 @@
         <action
             android:id="@+id/action_feedFragment2_to_dialogFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_feedFragment2_to_questionFragment"
+            app:destination="@id/questionFragment" />
 
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"
         android:name="ru.netology.nmedia.activity.NewPostFragment"
         android:label="@string/fragment_new_post"
-        tools:layout="@layout/fragment_new_post" />
+        tools:layout="@layout/fragment_new_post" >
+        <action
+            android:id="@+id/action_newPostFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/imageFragment"
         android:name="ru.netology.nmedia.activity.ImageFragment"
@@ -35,5 +42,14 @@
         android:name="ru.netology.nmedia.activity.LoginFragment"
         android:label="Dialog"
         tools:layout="@layout/fragment_login"/>
+    <fragment
+        android:id="@+id/questionFragment"
+        android:name="ru.netology.nmedia.activity.QuestionFragment"
+        android:label="Question"
+        tools:layout="@layout/fragment_question" >
+        <action
+            android:id="@+id/action_questionFragment_to_feedFragment2"
+            app:destination="@id/feedFragment2" />
+    </fragment>
 
 </navigation>

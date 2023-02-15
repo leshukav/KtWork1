@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.google.android.datatransport.runtime.backends.BackendResponse.ok
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
@@ -60,6 +61,7 @@ class AppActivity : AppCompatActivity() {
         var previousMenuProvider: MenuProvider? = null
         authViewModel.data.observe(this) {
             previousMenuProvider?.let(::removeMenuProvider)
+
             addMenuProvider(object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menuInflater.inflate(R.menu.menu_auth, menu)
@@ -82,7 +84,7 @@ class AppActivity : AppCompatActivity() {
                             true
                         }
                         R.id.logout -> {
-                            AppAuth.getInstance().removeAuth()
+                            findNavController(R.id.conteiner).navigate(R.id.action_feedFragment2_to_questionFragment)
                             true
                         }
                         else -> false

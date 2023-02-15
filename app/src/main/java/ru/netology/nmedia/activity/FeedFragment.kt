@@ -152,7 +152,6 @@ class FeedFragment : Fragment() {
             viewModel.loadPosts()
         }
         binding.swiperefresh.setOnRefreshListener {
-            println(authViewModel.authorized)
             viewModel.refreshPosts()
         }
 
