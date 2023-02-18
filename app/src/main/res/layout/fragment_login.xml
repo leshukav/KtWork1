@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <TextView
         android:id="@+id/Auth"
         android:layout_width="wrap_content"
@@ -20,47 +19,56 @@
 
     </TextView>
 
-    <EditText
-        android:id="@+id/login"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/loginEdit"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:ems="9"
-        android:hint="@string/enter_login"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="@+id/Auth"
-        app:layout_constraintTop_toBottomOf="@+id/Auth"
+        app:errorEnabled="true"
+        app:hintTextAppearance="@style/MyHintText"
+        app:layout_constraintEnd_toEndOf="@id/Auth"
+        app:layout_constraintStart_toStartOf="@id/Auth"
+        app:layout_constraintTop_toBottomOf="@id/Auth"
+        app:startIconDrawable="@drawable/ic_login_24">
 
-        tools:ignore="MissingConstraints">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/login"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    </EditText>
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordEdit"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:ems="9"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="@+id/login"
-        app:layout_constraintTop_toBottomOf="@+id/login"
+        app:errorEnabled="true"
+        app:hintTextAppearance="@style/MyHintText"
+        app:layout_constraintEnd_toEndOf="@id/loginEdit"
+        app:layout_constraintStart_toStartOf="@id/loginEdit"
+        app:layout_constraintTop_toBottomOf="@id/loginEdit"
+        app:startIconDrawable="@drawable/ic_lock_24">
 
-        tools:ignore="MissingConstraints">
-
-    </EditText>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="165dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="8dp"
-        android:layout_marginStart="4dp"
+
         android:text="@string/login"
-        app:layout_constraintStart_toStartOf="@+id/password"
-        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintEnd_toEndOf="@+id/passwordEdit"
+        app:layout_constraintStart_toStartOf="@+id/passwordEdit"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEdit"
         tools:ignore="MissingConstraints">
 
     </Button>
@@ -70,7 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="Auth, login, password, buttonLogin"
+        app:constraint_referenced_ids="Auth, loginEdit,passwordEdit, buttonLogin"
 
         />
 
@@ -88,65 +96,86 @@
 
     </TextView>
 
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nameEdit"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:ems="9"
-        android:hint="Name"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="@+id/registration"
-        app:layout_constraintTop_toBottomOf="@+id/registration"
-        tools:ignore="MissingConstraints">
+        app:errorEnabled="true"
+        app:hintTextAppearance="@style/MyHintText"
+        app:layout_constraintEnd_toEndOf="@id/registration"
+        app:layout_constraintStart_toStartOf="@id/registration"
+        app:layout_constraintTop_toBottomOf="@id/registration"
+        app:startIconDrawable="@drawable/ic_login_24">
 
-    </EditText>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name"
+            android:inputType="text"
+            tools:ignore="MissingConstraints" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-
-        android:id="@+id/loginRegistr"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/loginEditRegistr"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:ems="9"
-        android:hint="@string/login"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="@+id/name"
-        app:layout_constraintTop_toBottomOf="@+id/name"
-        tools:ignore="MissingConstraints">
+        app:errorEnabled="true"
+        app:hintTextAppearance="@style/MyHintText"
+        app:layout_constraintEnd_toEndOf="@id/nameEdit"
+        app:layout_constraintStart_toStartOf="@id/nameEdit"
+        app:layout_constraintTop_toBottomOf="@id/nameEdit"
+        app:startIconDrawable="@drawable/ic_login_24">
 
-    </EditText>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/loginRegistr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/login"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-
-        android:id="@+id/passRegistr"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordEditRegistr"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:ems="9"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="@+id/loginRegistr"
-        app:layout_constraintTop_toBottomOf="@+id/loginRegistr"
-        tools:ignore="MissingConstraints">
+        app:errorEnabled="true"
+        app:hintTextAppearance="@style/MyHintText"
+        app:layout_constraintEnd_toEndOf="@id/loginEditRegistr"
+        app:layout_constraintStart_toStartOf="@id/loginEditRegistr"
+        app:layout_constraintTop_toBottomOf="@id/loginEditRegistr"
+        app:startIconDrawable="@drawable/ic_lock_24">
 
-    </EditText>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passRegistr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-
-        android:id="@+id/passCheckRegistr"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passCheckEditRegistr"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:ems="9"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="@+id/passRegistr"
-        app:layout_constraintTop_toBottomOf="@+id/passRegistr"
-        tools:ignore="MissingConstraints">
+        app:errorEnabled="true"
+        app:hintTextAppearance="@style/MyHintText"
+        app:layout_constraintEnd_toEndOf="@id/passwordEditRegistr"
+        app:layout_constraintStart_toStartOf="@id/passwordEditRegistr"
+        app:layout_constraintTop_toBottomOf="@id/passwordEditRegistr"
+        app:startIconDrawable="@drawable/ic_lock_24">
 
-    </EditText>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passCheckRegistr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/registrButton"
@@ -156,8 +185,9 @@
         android:layout_margin="8dp"
         android:layout_marginStart="4dp"
         android:text="@string/registration"
-        app:layout_constraintStart_toStartOf="@+id/passCheckRegistr"
-        app:layout_constraintTop_toBottomOf="@+id/passCheckRegistr"
+        app:layout_constraintEnd_toEndOf="@+id/passCheckEditRegistr"
+        app:layout_constraintStart_toStartOf="@+id/passCheckEditRegistr"
+        app:layout_constraintTop_toBottomOf="@+id/passCheckEditRegistr"
         tools:ignore="MissingConstraints">
 
     </Button>
@@ -167,9 +197,49 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="registration,name,loginRegistr,passRegistr,passCheckRegistr,registrButton"
+        app:constraint_referenced_ids="registration,nameEdit,loginEditRegistr,passwordEditRegistr,passCheckEditRegistr,registrButton" />
 
-        />
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/Exit"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
+    <Button
+        android:id="@+id/buttonOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:text="@string/ok"
+        app:layout_constraintStart_toStartOf="@+id/text"
+        app:layout_constraintTop_toBottomOf="@+id/text"
+        tools:ignore="MissingConstraints">
+    </Button>
+
+    <Button
+        android:id="@+id/buttonCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:text="@string/cancel"
+        app:layout_constraintStart_toEndOf="@+id/buttonOk"
+        app:layout_constraintTop_toBottomOf="@+id/text"
+        tools:ignore="MissingConstraints">
+    </Button>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/questionGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="text, buttonOk, buttonCancel" />
 
     <ProgressBar
         android:id="@+id/loading"

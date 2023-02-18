@@ -14,7 +14,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.google.android.datatransport.runtime.backends.BackendResponse.ok
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
@@ -22,7 +21,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
-import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.databinding.ActivityAppBinding
 import ru.netology.nmedia.viewmodel.AuthViewModel
 
@@ -84,7 +82,9 @@ class AppActivity : AppCompatActivity() {
                             true
                         }
                         R.id.logout -> {
-                            findNavController(R.id.conteiner).navigate(R.id.action_feedFragment2_to_questionFragment)
+                            findNavController(R.id.conteiner).navigate(R.id.loginFragment,
+                                Bundle().apply
+                                { textArg = "questionGroup" })
                             true
                         }
                         else -> false

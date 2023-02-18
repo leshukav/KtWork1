@@ -10,7 +10,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.AndroidUtils
+import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
+import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.databinding.FragmentLoginBinding
 import ru.netology.nmedia.viewmodel.AuthViewModel
 
@@ -26,10 +28,20 @@ class LoginFragment : DialogFragment() {
 
         val binding = FragmentLoginBinding.inflate(inflater, container, false)
         arguments?.textArg?.let {
-            if (it.equals("loginGroup")) {
-                binding.loginGroup.isVisible = true
-            } else if (it.equals("registrGroup")) {
-                binding.registrGroup.isVisible = true
+            when (it) {
+                "loginGroup" -> {
+                    binding.loginGroup.isVisible = true
+                    true
+                }
+                "registrGroup" -> {
+                    binding.registrGroup.isVisible = true
+                    true
+                }
+                "questionGroup" -> {
+                    binding.questionGroup.isVisible = true
+                    true
+                }
+                else -> false
             }
 
         }
@@ -53,8 +65,8 @@ class LoginFragment : DialogFragment() {
         }
 
         authViewModel.data.observe(viewLifecycleOwner) {
-            if (authViewModel.authorized) {
-                findNavController().navigateUp()
+            if (authViewModel.authorized && !binding.questionGroup.isVisible) {
+                findNavController().navigate(R.id.feedFragment2)
             }
         }
 
@@ -100,6 +112,17 @@ class LoginFragment : DialogFragment() {
 
             }
         }
+        binding.buttonOk.setOnClickListener {
+            AppAuth.getInstance().removeAuth()
+            if (binding.questionGroup.isVisible) {
+                findNavController().navigateUp()
+            }
+        }
+
+        binding.buttonCancel.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         return binding.root
     }
 

@@ -116,10 +116,6 @@ class NewPostFragment : Fragment() {
                         findNavController().navigateUp()
                         true
                     }
-//                    R.id.logout -> {
-//                        findNavController().navigate(R.id.action_newPostFragment_to_questionFragment)
-//                        true
-//                    }
                     else -> false
                 }
 

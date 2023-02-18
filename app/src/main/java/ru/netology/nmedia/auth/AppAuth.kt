@@ -20,6 +20,7 @@ class AppAuth private constructor(context: Context) {
             _data = MutableStateFlow(AuthModel(id, token))
         }
     }
+
     val data = _data.asStateFlow()
 
     @Synchronized

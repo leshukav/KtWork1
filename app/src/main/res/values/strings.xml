@@ -47,4 +47,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="registration">Registration</string>
     <string name="Exit">Are you sure to get out</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
 </resources>
