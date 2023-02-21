@@ -61,7 +61,6 @@ class AppAuth private constructor(context: Context) {
                 val response = PostsApi.retrofitService.sendPushToken(PushToken(pushToken))
                 if (response.isSuccessful) {
                    val res = PostsApi.retrofitService.checkRecipientId(pushToken, Recipient(555,"Wow!"))
-                    println(res.body())
                }
             } catch (e: Exception) {
                 e.printStackTrace()

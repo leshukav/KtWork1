@@ -3,7 +3,9 @@ package ru.netology.nmedia.service
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -12,7 +14,9 @@ import com.google.gson.Gson
 import ru.netology.nmedia.R
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.db.AppDb
+import ru.netology.nmedia.dto.Recipient
 import ru.netology.nmedia.repository.PostRepositoryImpl
+import java.util.jar.Manifest
 import kotlin.random.Random
 
 
@@ -38,9 +42,16 @@ class FCMService() : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         val currentId = AppAuth.getInstance().data.value.id
-        message.data[action]?.let {
+        val body = gson.fromJson(message.data[content], Recipient::class.java)
+        println(body.recipient)
 
-        }
+
+
+
+//        when (body.recipient) {
+//            currentId, null ->
+//            else -> AppAuth.getInstance().sendPushToken()
+//        }
 //        val checkEnum: Boolean =
 //            try {
 //
@@ -67,6 +78,7 @@ class FCMService() : FirebaseMessagingService() {
 //            }
 //        } else handleError()
     }
+
 
     override fun onNewToken(token: String) {
         AppAuth.getInstance().sendPushToken(token)
@@ -133,6 +145,7 @@ class FCMService() : FirebaseMessagingService() {
 enum class Action {
     LIKE, NEWPOST
 }
+
 //
 //data class Like(
 //    val userId: Long,
