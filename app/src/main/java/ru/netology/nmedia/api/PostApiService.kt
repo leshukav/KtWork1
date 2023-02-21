@@ -1,5 +1,8 @@
 package ru.netology.nmedia.api
 
+import android.net.Uri
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Param
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -12,9 +15,11 @@ import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dto.Media
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.dto.PushToken
+import ru.netology.nmedia.dto.Recipient
 import ru.netology.nmedia.model.AuthModel
 
-private const val BASE_URL = "http://10.0.2.2:9999/api/slow/"
+private const val BASE_URL = "http://10.0.2.2:9999/api/"
 
 private val logging = HttpLoggingInterceptor().apply {
     if (BuildConfig.DEBUG) {
@@ -41,38 +46,44 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 interface PostsApiService {
-    @GET("posts")
+    @GET("slow/posts")
     suspend fun getAll(): Response<List<Post>>
 
-    @GET("posts/{id}/newer")
+    @GET("slow/posts/{id}/newer")
     suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
 
     @Multipart
-    @POST("media")
+    @POST("slow/media")
     suspend fun upload(@Part media: MultipartBody.Part): Response<Media>
 
-    @GET("posts/{id}")
+    @GET("slow/posts/{id}")
     suspend fun getById(@Path("id") id: Long): Response<Post>
 
-    @POST("posts")
+    @POST("slow/posts")
     suspend fun save(@Body post: Post): Response<Post>
 
-    @DELETE("posts/{id}")
+    @DELETE("slow/posts/{id}")
     suspend fun removeById(@Path("id") id: Long): Response<Unit>
 
-    @POST("posts/{id}/likes")
+    @POST("slow/posts/{id}/likes")
     suspend fun likeById(@Path("id") id: Long): Response<Post>
 
-    @DELETE("posts/{id}/likes")
+    @DELETE("slow/posts/{id}/likes")
     suspend fun unlikeById(@Path("id") id: Long): Response<Post>
 
     @FormUrlEncoded
-    @POST("users/authentication")
+    @POST("slow/users/authentication")
     suspend fun updateUser(@Field("login") login: String, @Field("pass") pass: String): Response<AuthModel>
 
     @FormUrlEncoded
-    @POST("users/registration")
+    @POST("slow/users/registration")
     suspend fun registerUser(@Field("login") login: String, @Field("pass") pass: String, @Field("name") name: String): Response<AuthModel>
+
+    @POST("slow/users/push-tokens")
+    suspend fun sendPushToken(@Body token: PushToken): Response<Unit>
+
+    @POST("pushes")
+    suspend fun checkRecipientId(@Query("token") token: String, @Body recipient: Recipient): Response<Recipient>
 }
 
 object PostsApi {

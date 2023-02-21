@@ -14,7 +14,6 @@ import retrofit2.HttpException
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dto.Attachment
 import ru.netology.nmedia.dto.Media
-import ru.netology.nmedia.dto.MediaUpload
 import ru.netology.nmedia.entity.PostEntity
 import ru.netology.nmedia.entity.toDto
 import ru.netology.nmedia.entity.toEntity
@@ -24,7 +23,6 @@ import ru.netology.nmedia.error.AppError
 import ru.netology.nmedia.error.NetworkError
 import ru.netology.nmedia.error.UnknownError
 import ru.netology.nmedia.model.MediaModel
-
 
 class PostRepositoryImpl(
     private val postDao: PostDao
@@ -56,10 +54,7 @@ class PostRepositoryImpl(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val posts = response.body().orEmpty() //.map {
-//                if (it.addServer) it else it.copy(addServer = true)
-//            }
-            //        println(posts)
+            val posts = response.body().orEmpty()
             postDao.insert(posts.map(PostEntity::fromDto))
         } catch (e: IOException) {
             throw NetworkError
