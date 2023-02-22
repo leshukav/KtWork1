@@ -1,7 +1,6 @@
 package ru.netology.nmedia.auth
 
 import android.content.Context
-import android.net.Uri
 import androidx.core.content.edit
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
@@ -10,13 +9,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import retrofit2.HttpException
-import retrofit2.http.Url
 import ru.netology.nmedia.api.PostsApi
 import ru.netology.nmedia.dto.PushToken
 import ru.netology.nmedia.dto.Recipient
 import ru.netology.nmedia.model.AuthModel
-import java.net.HttpCookie.parse
 
 class AppAuth private constructor(context: Context) {
     private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
@@ -35,7 +31,7 @@ class AppAuth private constructor(context: Context) {
         sendPushToken()
     }
 
-    val data: StateFlow<AuthModel> = _data.asStateFlow() as StateFlow<AuthModel>
+    val data = _data.asStateFlow()
 
     @Synchronized
     fun setAuth(id: Long, token: String) {
@@ -58,10 +54,9 @@ class AppAuth private constructor(context: Context) {
         CoroutineScope(Dispatchers.Default).launch {
             try {
                 val pushToken = token ?: Firebase.messaging.token.await()
-                val response = PostsApi.retrofitService.sendPushToken(PushToken(pushToken))
-                if (response.isSuccessful) {
-                   val res = PostsApi.retrofitService.checkRecipientId(pushToken, Recipient(555,"Wow!"))
-               }
+                PostsApi.retrofitService.sendPushToken(PushToken(pushToken))
+                PostsApi.retrofitService.checkRecipientId(pushToken, Recipient(4,"Wow!!!!"))
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }

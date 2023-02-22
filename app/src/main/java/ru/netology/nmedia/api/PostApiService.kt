@@ -83,7 +83,7 @@ interface PostsApiService {
     suspend fun sendPushToken(@Body token: PushToken): Response<Unit>
 
     @POST("pushes")
-    suspend fun checkRecipientId(@Query("token") token: String, @Body recipient: Recipient): Response<Recipient>
+    suspend fun checkRecipientId(@Query("token") token: String, @Body recipient: Recipient)//: Response<Recipient>
 }
 
 object PostsApi {
