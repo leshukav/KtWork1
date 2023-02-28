@@ -7,24 +7,29 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.AndroidUtils
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.databinding.FragmentLoginBinding
 import ru.netology.nmedia.viewmodel.AuthViewModel
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class LoginFragment : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
-        val authViewModel by viewModels<AuthViewModel>()
+        lateinit var appAuth: AppAuth
+
+        val authViewModel: AuthViewModel by activityViewModels()
 
         val binding = FragmentLoginBinding.inflate(inflater, container, false)
         arguments?.textArg?.let {
@@ -113,7 +118,7 @@ class LoginFragment : DialogFragment() {
             }
         }
         binding.buttonOk.setOnClickListener {
-            AppAuth.getInstance().removeAuth()
+            appAuth.removeAuth()
             if (binding.questionGroup.isVisible) {
                 findNavController().navigateUp()
             }

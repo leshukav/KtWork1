@@ -3,29 +3,28 @@ package ru.netology.nmedia.service
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.os.Build
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.R
 import ru.netology.nmedia.auth.AppAuth
-import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.dto.Recipient
-import ru.netology.nmedia.repository.PostRepositoryImpl
-import java.util.jar.Manifest
+import javax.inject.Inject
 import kotlin.random.Random
 
-
+@AndroidEntryPoint
 class FCMService() : FirebaseMessagingService() {
     private val action = "action"
     private val content = "content"
     private val channelId = "remote"
     private val gson = Gson()
+
+    @Inject
+    lateinit var appAuth: AppAuth
 
     override fun onCreate() {
         super.onCreate()
@@ -42,7 +41,8 @@ class FCMService() : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        val currentId = AppAuth.getInstance().data.value?.id
+
+        val currentId = appAuth.authStateFlow.value.id
         val body = gson.fromJson(message.data[content], Recipient::class.java)
         val recipient = body.recipient
 
@@ -52,10 +52,10 @@ class FCMService() : FirebaseMessagingService() {
 
         }
         if (recipient == 0L && currentId != body.recipient) {
-            AppAuth.getInstance().sendPushToken()
+            appAuth.sendPushToken()
         }
         if (recipient != 0L && currentId != body.recipient && recipient != null) {
-            AppAuth.getInstance().sendPushToken()
+            appAuth.sendPushToken()
         }
     }
 
@@ -80,7 +80,7 @@ class FCMService() : FirebaseMessagingService() {
     }
 
     override fun onNewToken(token: String) {
-        AppAuth.getInstance().sendPushToken(token)
+        appAuth.sendPushToken(token)
         println(token)
     }
 

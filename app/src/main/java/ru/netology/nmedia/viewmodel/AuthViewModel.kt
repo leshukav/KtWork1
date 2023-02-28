@@ -1,31 +1,30 @@
 package ru.netology.nmedia.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.auth.AppAuth
-import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.model.AuthModel
 import ru.netology.nmedia.model.AuthModelState
 import ru.netology.nmedia.repository.PostRepository
-import ru.netology.nmedia.repository.PostRepositoryImpl
+import javax.inject.Inject
 
-class AuthViewModel(application: Application) : AndroidViewModel(application) {
-    val data: LiveData<AuthModel?> = AppAuth.getInstance()
-        .data
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val auth: AppAuth,
+    private val repository: PostRepository
+) : ViewModel() {
+    val data: LiveData<AuthModel> = auth.authStateFlow
         .asLiveData(Dispatchers.Default)
 
     val authorized: Boolean
-        get() = AppAuth.getInstance().data.value != null
+        get() = auth.authStateFlow.value.id != 0L
 
     private val _state = MutableLiveData(AuthModelState())
     val state: LiveData<AuthModelState>
         get() = _state
 
-    private val repository: PostRepository = PostRepositoryImpl(
-        AppDb.getInstance(application).postDao()
-    )
 
     fun authorization(login: String, pass: String) {
         viewModelScope.launch {

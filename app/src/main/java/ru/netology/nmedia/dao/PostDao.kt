@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.entity.PostEntity
 
 @Dao
@@ -46,9 +45,6 @@ interface PostDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertHidden(post: List<PostEntity>)
-
-//    suspend fun save(post: PostEntity) =
-//        if (post.id == 0L) insert(post) else updateContentById(post.id, post.content)
 
     @Query(
         """

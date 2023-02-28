@@ -4,39 +4,37 @@ import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
-import android.content.Context
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.netology.nmedia.AndroidUtils
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
-import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
-import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.repository.PostRepositoryImpl
 import ru.netology.nmedia.viewmodel.AuthViewModel
 import ru.netology.nmedia.viewmodel.PostViewModel
 
-
+@AndroidEntryPoint
 class NewPostFragment : Fragment() {
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val viewModel: PostViewModel by activityViewModels()
 
-    val viewModel by viewModels<PostViewModel>(
-        ownerProducer = ::requireParentFragment
-    )
-    val authViewModel by viewModels<AuthViewModel>()
+    private val authViewModel: AuthViewModel by activityViewModels()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -108,8 +106,8 @@ class NewPostFragment : Fragment() {
                 when (menuItem.itemId) {
                     R.id.new_post -> {
                         val text = binding.edit.text.toString()
-                        if (!text.isNullOrBlank()) {
-                            viewModel.changeContentAndSave(text)
+                        if (text.isNotBlank()) {
+                            this@NewPostFragment.viewModel.changeContentAndSave(text)
                         }
                         AndroidUtils.hideKeyboard(requireView())
                         viewModel.loadNewer()

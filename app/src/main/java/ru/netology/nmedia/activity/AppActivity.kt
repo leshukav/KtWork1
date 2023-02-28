@@ -19,14 +19,18 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
 import ru.netology.nmedia.databinding.ActivityAppBinding
 import ru.netology.nmedia.viewmodel.AuthViewModel
 
+@AndroidEntryPoint
 class AppActivity : AppCompatActivity() {
 
     lateinit var appBarConfiquration: AppBarConfiguration
+    private val authViewModel: AuthViewModel by viewModels()
+ //   val authViewModel by viewModels<AuthViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +58,7 @@ class AppActivity : AppCompatActivity() {
         appBarConfiquration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiquration)
 
-        val authViewModel by viewModels<AuthViewModel>()
+
 
         var previousMenuProvider: MenuProvider? = null
         authViewModel.data.observe(this) {
