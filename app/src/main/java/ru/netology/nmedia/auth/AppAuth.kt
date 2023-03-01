@@ -62,7 +62,7 @@ class AppAuth @Inject constructor(
 
     @Synchronized
     fun removeAuth() {
-        _authStateFlow.value = AuthModel()
+        _authStateFlow.value = AuthModel(0L,null)
         prefs.edit { clear() }
         sendPushToken()
     }
@@ -71,8 +71,9 @@ class AppAuth @Inject constructor(
         CoroutineScope(Dispatchers.Default).launch {
             try {
                 val pushToken = token ?: Firebase.messaging.token.await()
-                val entryPoint = EntryPointAccessors.fromApplication(context, AppAuthEntryPoint::class.java)
-                entryPoint.apiService().sendPushToken(PushToken(pushToken))
+                val entryPoint = getApiService(context).sendPushToken(PushToken(pushToken))
+ //                   EntryPointAccessors.fromApplication(context, AppAuthEntryPoint::class.java)
+ //               entryPoint.apiService().sendPushToken(PushToken(pushToken))
                 //  PostsApi.retrofitService.checkRecipientId(pushToken, Recipient(4,"Wow!!!!"))
 
             } catch (e: Exception) {

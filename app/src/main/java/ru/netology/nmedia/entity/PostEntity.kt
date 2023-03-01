@@ -31,18 +31,5 @@ data class PostEntity(
     }
 }
 
-//data class Attachment(
-//    var url: String,
-//    var type: AttachmentType,
-//) {
-//    fun toDto() = Attachment(url, type)
-//
-//    companion object {
-//        fun fromDto(dto: Attachment?) = dto?.let {
-//            Attachment(it.url, it.type)
-//        }
-//    }
-//}
-
 fun List<PostEntity>.toDto(): List<Post> = map(PostEntity::toDto)
 fun List<Post>.toEntity(): List<PostEntity> = map(PostEntity::fromDto)

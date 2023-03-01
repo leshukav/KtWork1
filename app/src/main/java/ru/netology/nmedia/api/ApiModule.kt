@@ -38,7 +38,7 @@ class ApiModule {
         .addInterceptor(logging)
         .addInterceptor { chain ->
             appAuth.authStateFlow.value?.token?.let { token ->
-               val newRequest = chain.request().newBuilder()
+                val newRequest = chain.request().newBuilder()
                     .addHeader("Authorization", token)
                     .build()
                 return@addInterceptor chain.proceed(newRequest)
@@ -52,10 +52,10 @@ class ApiModule {
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
     ): Retrofit = Retrofit.Builder()
-    .addConverterFactory(GsonConverterFactory.create())
-    .baseUrl(BASE_URL)
-    .client(okHttpClient)
-    .build()
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl(BASE_URL)
+        .client(okHttpClient)
+        .build()
 
     @Singleton
     @Provides

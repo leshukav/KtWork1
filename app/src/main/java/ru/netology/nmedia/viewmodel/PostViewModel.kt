@@ -2,6 +2,7 @@ package ru.netology.nmedia.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
@@ -26,7 +27,7 @@ private val empty = Post(
     likedByMe = false,
     published = 26122022,
 )
-
+@HiltViewModel
 @ExperimentalCoroutinesApi
 class PostViewModel @Inject constructor(
     private val repository: PostRepository,

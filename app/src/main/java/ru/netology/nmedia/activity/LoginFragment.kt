@@ -21,13 +21,15 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : DialogFragment() {
+
+    @Inject
+    lateinit var appAuth: AppAuth
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        lateinit var appAuth: AppAuth
 
         val authViewModel: AuthViewModel by activityViewModels()
 

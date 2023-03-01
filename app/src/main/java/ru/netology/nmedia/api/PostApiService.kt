@@ -9,32 +9,6 @@ import ru.netology.nmedia.dto.PushToken
 import ru.netology.nmedia.dto.Recipient
 import ru.netology.nmedia.model.AuthModel
 
-//private const val BASE_URL = "http://10.0.2.2:9999/api/"
-//
-//private val logging = HttpLoggingInterceptor().apply {
-//    if (BuildConfig.DEBUG) {
-//        level = HttpLoggingInterceptor.Level.BODY
-//    }
-//}
-//
-//private val okhttp = OkHttpClient.Builder()
-//    .addInterceptor(logging)
-//    .addInterceptor {chain ->
-//        val request = AppAuth.getInstance().data.value?.token?.let {
-//            chain.request().newBuilder()
-//                .addHeader("Authorization", it)
-//                .build()
-//        } ?: chain.request()
-//        chain.proceed(request)
-//    }
-//    .build()
-//
-//private val retrofit = Retrofit.Builder()
-//    .addConverterFactory(GsonConverterFactory.create())
-//    .baseUrl(BASE_URL)
-//    .client(okhttp)
-//    .build()
-
 interface PostsApiService {
     @GET("slow/posts")
     suspend fun getAll(): Response<List<Post>>

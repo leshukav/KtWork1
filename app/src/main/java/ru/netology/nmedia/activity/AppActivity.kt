@@ -23,14 +23,23 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
 import ru.netology.nmedia.databinding.ActivityAppBinding
+import ru.netology.nmedia.service.FirebaseModule
 import ru.netology.nmedia.viewmodel.AuthViewModel
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AppActivity : AppCompatActivity() {
 
+    @Inject
+    lateinit var firebase: FirebaseMessaging
+
+    @Inject
+    lateinit var googleApiAvailability: GoogleApiAvailability
+
     lateinit var appBarConfiquration: AppBarConfiguration
+
     private val authViewModel: AuthViewModel by viewModels()
- //   val authViewModel by viewModels<AuthViewModel>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +66,6 @@ class AppActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         appBarConfiquration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiquration)
-
 
 
         var previousMenuProvider: MenuProvider? = null
@@ -99,11 +107,14 @@ class AppActivity : AppCompatActivity() {
         }
 
 
-        checkGoogleApiAvailability()
+        checkGoogleApiAvailability(firebase, googleApiAvailability)
     }
 
-    private fun checkGoogleApiAvailability() {
-        with(GoogleApiAvailability.getInstance()) {
+    private fun checkGoogleApiAvailability(
+        firebase: FirebaseMessaging,
+        googleApiAvailability: GoogleApiAvailability,
+    ) {
+        with(googleApiAvailability) {
             val code = isGooglePlayServicesAvailable(this@AppActivity)
             if (code == ConnectionResult.SUCCESS) {
                 return@with
@@ -119,8 +130,7 @@ class AppActivity : AppCompatActivity() {
             )
                 .show()
         }
-
-        FirebaseMessaging.getInstance().token.addOnSuccessListener {
+        firebase.token.addOnSuccessListener {
             println(it)
         }
     }

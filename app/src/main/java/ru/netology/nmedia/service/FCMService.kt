@@ -41,7 +41,6 @@ class FCMService() : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-
         val currentId = appAuth.authStateFlow.value.id
         val body = gson.fromJson(message.data[content], Recipient::class.java)
         val recipient = body.recipient
