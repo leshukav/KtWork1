@@ -13,8 +13,17 @@ interface PostsApiService {
     @GET("slow/posts")
     suspend fun getAll(): Response<List<Post>>
 
+    @GET("slow/posts/latest")
+    suspend fun getLatest(@Query("count") count: Int): Response<List<Post>>
+
     @GET("slow/posts/{id}/newer")
     suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
+
+    @GET("slow/posts/{id}/newer")
+    suspend fun getBefore(@Path("id") id: Long, @Query("count") count: Int): Response<List<Post>>
+
+    @GET("slow/posts/{id}/newer")
+    suspend fun getAfter(@Path("id") id: Long, @Query("count") count: Int): Response<List<Post>>
 
     @Multipart
     @POST("slow/media")

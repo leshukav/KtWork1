@@ -2,12 +2,13 @@ package ru.netology.nmedia.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.*
+import androidx.lifecycle.switchMap
+import androidx.paging.PagingData
+import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dto.Post
@@ -38,23 +39,21 @@ class PostViewModel @Inject constructor(
     val state: LiveData<FeedModelState>
         get() = _state
 
-    val data: LiveData<FeedModel> = appAuth
+    val data: Flow<PagingData<Post>> = appAuth
         .authStateFlow
         .flatMapLatest { (myId, _) ->
             repository.data
                 .map { posts ->
-                    FeedModel(posts.map {
-                        it.copy(ownedByMe = it.authorId == myId)
-                    }, posts.isEmpty())
+                       posts.map {it.copy(ownedByMe = it.authorId == myId)}
                 }
-        }.asLiveData(Dispatchers.Default)
+        }.flowOn(Dispatchers.Default)
 
 
-    val newerCount: LiveData<Int> = data.switchMap {
-        repository.getNewerCount(it.posts.firstOrNull()?.id ?: 0L)
-            .catch { e -> e.printStackTrace() }
-            .asLiveData(Dispatchers.Default)
-    }
+//    val newerCount: LiveData<Int> = data.switchMap {
+//        repository.getNewerCount(it.posts.firstOrNull()?.id ?: 0L)
+//            .catch { e -> e.printStackTrace() }
+//            .asLiveData(Dispatchers.Default)
+//    }
 
     val edited = MutableLiveData(empty)
     private val _postCreated = SingleLiveEvent<Unit>()
@@ -117,14 +116,14 @@ class PostViewModel @Inject constructor(
     }
 
     fun removeById(id: Long) {
-        val postOld: Post? = data.value?.posts?.find { it.id == id }
+   //     val postOld: Post? = data.value?.posts?.find { it.id == id }
         viewModelScope.launch {
             try {
                 repository.removeById(id)
                 _state.value = FeedModelState(removeError = false)
             } catch (e: Exception) {
                 _state.value = FeedModelState(removeError = true)
-                postOld?.let { repository.saveOld(it) }
+  //              postOld?.let { repository.saveOld(it) }
             }
         }
     }
