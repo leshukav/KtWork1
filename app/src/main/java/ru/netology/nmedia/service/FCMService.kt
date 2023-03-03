@@ -44,17 +44,17 @@ class FCMService() : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         val currentId = AppAuth.getInstance().data.value?.id
         val body = gson.fromJson(message.data[content], Recipient::class.java)
-        val recipient = body.recipient
+        val recipient = body.recipientId
 
         when (recipient) {
             currentId -> handleOk()
             null ->  handle()
 
         }
-        if (recipient == 0L && currentId != body.recipient) {
+        if (recipient == 0L && currentId != body.recipientId) {
             AppAuth.getInstance().sendPushToken()
         }
-        if (recipient != 0L && currentId != body.recipient && recipient != null) {
+        if (recipient != 0L && currentId != body.recipientId && recipient != null) {
             AppAuth.getInstance().sendPushToken()
         }
     }
@@ -62,7 +62,7 @@ class FCMService() : FirebaseMessagingService() {
     private fun handle() {
         val notification = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("Null")
+            .setContentTitle("Mass mailing")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
         NotificationManagerCompat.from(this)
@@ -72,7 +72,7 @@ class FCMService() : FirebaseMessagingService() {
     private fun handleOk() {
         val notification = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("Ok")
+            .setContentTitle("Authorization Ok")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
         NotificationManagerCompat.from(this)

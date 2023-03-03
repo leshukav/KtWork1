@@ -55,7 +55,7 @@ class AppAuth private constructor(context: Context) {
             try {
                 val pushToken = token ?: Firebase.messaging.token.await()
                 PostsApi.retrofitService.sendPushToken(PushToken(pushToken))
-                PostsApi.retrofitService.checkRecipientId(pushToken, Recipient(4,"Wow!!!!"))
+                    //PostsApi.retrofitService.checkRecipientId(pushToken, Recipient(2,"Wow!!!!"))
 
             } catch (e: Exception) {
                 e.printStackTrace()

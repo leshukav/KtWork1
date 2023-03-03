@@ -90,7 +90,7 @@ class PostRepositoryImpl(
         try {
             val media = upload(mediaModel)
             val response = PostsApi.retrofitService.save(
-                post.copy(attachment = Attachment(media.id, AttachmentType.IMAGE))
+                post.copy(attachment = Attachment(media.id,AttachmentType.IMAGE))
             )
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
