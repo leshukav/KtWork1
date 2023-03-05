@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.AndroidUtils
@@ -74,6 +73,7 @@ class LoginFragment : DialogFragment() {
         authViewModel.data.observe(viewLifecycleOwner) {
             if (authViewModel.authorized && !binding.questionGroup.isVisible) {
                 findNavController().navigate(R.id.feedFragment2)
+
             }
         }
 

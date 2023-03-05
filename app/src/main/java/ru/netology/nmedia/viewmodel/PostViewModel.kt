@@ -28,6 +28,7 @@ private val empty = Post(
     likedByMe = false,
     published = 26122022,
 )
+
 @HiltViewModel
 @ExperimentalCoroutinesApi
 class PostViewModel @Inject constructor(
@@ -44,7 +45,7 @@ class PostViewModel @Inject constructor(
         .flatMapLatest { (myId, _) ->
             repository.data
                 .map { posts ->
-                       posts.map {it.copy(ownedByMe = it.authorId == myId)}
+                    posts.map { it.copy(ownedByMe = it.authorId == myId) }
                 }
         }.flowOn(Dispatchers.Default)
 
@@ -116,14 +117,16 @@ class PostViewModel @Inject constructor(
     }
 
     fun removeById(id: Long) {
-   //     val postOld: Post? = data.value?.posts?.find { it.id == id }
+        //    val postOld: Unit = data.collectLatest { id == id }
+        //     }
+        //      val postOld: Post? = data.value?.posts?.find { it.id == id }
         viewModelScope.launch {
             try {
                 repository.removeById(id)
                 _state.value = FeedModelState(removeError = false)
             } catch (e: Exception) {
                 _state.value = FeedModelState(removeError = true)
-  //              postOld?.let { repository.saveOld(it) }
+                //              postOld?.let { repository.saveOld(it) }
             }
         }
     }

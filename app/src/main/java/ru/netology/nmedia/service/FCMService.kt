@@ -43,17 +43,17 @@ class FCMService() : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         val currentId = appAuth.authStateFlow.value.id
         val body = gson.fromJson(message.data[content], Recipient::class.java)
-        val recipient = body.recipient
+        val recipient = body.recipientId
 
         when (recipient) {
             currentId -> handleOk()
             null ->  handle()
 
         }
-        if (recipient == 0L && currentId != body.recipient) {
+        if (recipient == 0L && currentId != body.recipientId) {
             appAuth.sendPushToken()
         }
-        if (recipient != 0L && currentId != body.recipient && recipient != null) {
+        if (recipient != 0L && currentId != body.recipientId && recipient != null) {
             appAuth.sendPushToken()
         }
     }

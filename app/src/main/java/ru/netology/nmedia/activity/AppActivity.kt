@@ -107,13 +107,10 @@ class AppActivity : AppCompatActivity() {
         }
 
 
-        checkGoogleApiAvailability(firebase, googleApiAvailability)
+        checkGoogleApiAvailability()
     }
 
-    private fun checkGoogleApiAvailability(
-        firebase: FirebaseMessaging,
-        googleApiAvailability: GoogleApiAvailability,
-    ) {
+    private fun checkGoogleApiAvailability() {
         with(googleApiAvailability) {
             val code = isGooglePlayServicesAvailable(this@AppActivity)
             if (code == ConnectionResult.SUCCESS) {

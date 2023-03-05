@@ -1,6 +1,6 @@
 package ru.netology.nmedia.dto
 
 data class Recipient(
-    val recipient: Long?,
+    val recipientId: Long?,
     val content: String,
 )

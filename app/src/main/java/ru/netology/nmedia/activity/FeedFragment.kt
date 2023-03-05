@@ -28,6 +28,8 @@ import ru.netology.nmedia.viewmodel.PostViewModel
 @AndroidEntryPoint
 class FeedFragment : Fragment() {
 
+    lateinit var adapter: PostAdapter
+
     private val viewModel: PostViewModel by activityViewModels()
 
     private val authViewModel: AuthViewModel by activityViewModels()
@@ -42,7 +44,7 @@ class FeedFragment : Fragment() {
 
         val binding = FragmentFeedBinding.inflate(inflater, container, false)
 
-        val adapter = PostAdapter(object : OnInteractionListener {
+        adapter = PostAdapter(object : OnInteractionListener {
             override fun onLike(post: Post) {
                 if (!post.likedByMe) {
                     viewModel.likeById(post.id)
@@ -134,15 +136,13 @@ class FeedFragment : Fragment() {
 //            println("Newer couunt $count")
 //        }
 
-        lifecycleScope.launchWhenCreated {
-            viewModel.data.collectLatest {
-                adapter.submitData(it)
-            }
+        authViewModel.data.observe(viewLifecycleOwner) {
+            loadLatestPosts()
         }
 
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow.collectLatest {
-              binding.swiperefresh.isRefreshing = it.refresh is LoadState.Loading
+                binding.swiperefresh.isRefreshing = it.refresh is LoadState.Loading
                         || it.append is LoadState.Loading
                         || it.prepend is LoadState.Loading
             }
@@ -181,6 +181,13 @@ class FeedFragment : Fragment() {
         return binding.root
     }
 
+    private fun loadLatestPosts() {
+        lifecycleScope.launchWhenCreated {
+            viewModel.data.collectLatest {
+                adapter.submitData(it)
+            }
+        }
+    }
 }
 
 
