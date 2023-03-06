@@ -21,14 +21,20 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.R
-import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
+import ru.netology.nmedia.StringArg
 import ru.netology.nmedia.databinding.ActivityAppBinding
-import ru.netology.nmedia.service.FirebaseModule
 import ru.netology.nmedia.viewmodel.AuthViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class AppActivity : AppCompatActivity() {
+    companion object {
+        var Bundle.textArg by StringArg
+        const val LOGIN_GROUP = "loginGroup"
+        const val REGISTR_GROUP = "registrGroup"
+        const val QUESTION_GROUP = "questionGroup"
+
+    }
 
     @Inject
     lateinit var firebase: FirebaseMessaging
@@ -84,19 +90,19 @@ class AppActivity : AppCompatActivity() {
                         R.id.login -> {
                             findNavController(R.id.conteiner).navigate(R.id.action_feedFragment2_to_dialogFragment,
                                 Bundle().apply
-                                { textArg = "loginGroup" })
+                                { textArg = LOGIN_GROUP })
                             true
                         }
                         R.id.register -> {
                             findNavController(R.id.conteiner).navigate(R.id.action_feedFragment2_to_dialogFragment,
                                 Bundle().apply
-                                { textArg = "registrGroup" })
+                                { textArg = REGISTR_GROUP })
                             true
                         }
                         R.id.logout -> {
                             findNavController(R.id.conteiner).navigate(R.id.loginFragment,
                                 Bundle().apply
-                                { textArg = "questionGroup" })
+                                { textArg = QUESTION_GROUP })
                             true
                         }
                         else -> false

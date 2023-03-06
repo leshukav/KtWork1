@@ -8,15 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
-import ru.netology.nmedia.StringArg
+import ru.netology.nmedia.activity.AppActivity.Companion.textArg
 import ru.netology.nmedia.databinding.FragmentImageBinding
 
 @AndroidEntryPoint
 class ImageFragment : Fragment() {
-
-    companion object {
-        var Bundle.textArg by StringArg
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

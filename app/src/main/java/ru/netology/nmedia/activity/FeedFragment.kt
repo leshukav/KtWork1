@@ -18,7 +18,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.R
-import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
+import ru.netology.nmedia.activity.AppActivity.Companion.LOGIN_GROUP
+import ru.netology.nmedia.activity.AppActivity.Companion.textArg
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
@@ -73,7 +74,7 @@ class FeedFragment : Fragment() {
                 if (post.id == 0L) {
                     return
                 }
-                val text = post.content   //content
+                val text = post.content
                 findNavController().navigate(
                     R.id.action_feedFragment2_to_newPostFragment,
                     Bundle().apply {
@@ -113,7 +114,7 @@ class FeedFragment : Fragment() {
                     .setAction("Ok") {
                         findNavController().navigate(R.id.action_feedFragment2_to_dialogFragment,
                             Bundle().apply
-                            { textArg = "loginGroup" })
+                            { textArg = LOGIN_GROUP })
                     }
                     .show()
             }
@@ -175,7 +176,7 @@ class FeedFragment : Fragment() {
             } else {
                 findNavController().navigate(R.id.action_feedFragment2_to_dialogFragment,
                     Bundle().apply
-                    { textArg = "loginGroup" })
+                    { textArg = LOGIN_GROUP })
             }
         }
         return binding.root

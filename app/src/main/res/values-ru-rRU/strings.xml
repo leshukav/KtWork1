@@ -48,4 +48,9 @@
     <string name="Exit">Are you sure to get out</string>
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
+    <string name="Login_not_found">Login not found</string>
+    <string name="Wait_authorization">Wait authorization</string>
+    <string name="Login_is_Null">Login is Null</string>
+    <string name="Password_not_correct">Password not correct</string>
+    <string name="Login_Name_is_not_empty">Login/Name is not empty</string>
 </resources>

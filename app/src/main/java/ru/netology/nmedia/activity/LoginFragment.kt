@@ -12,7 +12,10 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.AndroidUtils
 import ru.netology.nmedia.R
-import ru.netology.nmedia.activity.ImageFragment.Companion.textArg
+import ru.netology.nmedia.activity.AppActivity.Companion.LOGIN_GROUP
+import ru.netology.nmedia.activity.AppActivity.Companion.QUESTION_GROUP
+import ru.netology.nmedia.activity.AppActivity.Companion.REGISTR_GROUP
+import ru.netology.nmedia.activity.AppActivity.Companion.textArg
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.databinding.FragmentLoginBinding
 import ru.netology.nmedia.viewmodel.AuthViewModel
@@ -35,15 +38,15 @@ class LoginFragment : DialogFragment() {
         val binding = FragmentLoginBinding.inflate(inflater, container, false)
         arguments?.textArg?.let {
             when (it) {
-                "loginGroup" -> {
+                LOGIN_GROUP -> {
                     binding.loginGroup.isVisible = true
                     true
                 }
-                "registrGroup" -> {
+                REGISTR_GROUP -> {
                     binding.registrGroup.isVisible = true
                     true
                 }
-                "questionGroup" -> {
+                QUESTION_GROUP -> {
                     binding.questionGroup.isVisible = true
                     true
                 }
@@ -58,7 +61,7 @@ class LoginFragment : DialogFragment() {
                 AndroidUtils.hideKeyboard(requireView())
                 binding.buttonLogin.let { button ->
                     button.isClickable = false
-                    button.text = "Wait authorization"
+                    button.text = getString(R.string.Wait_authorization)
                 }
                 binding.loading.isVisible = true
                 binding.login.isEnabled = false
@@ -66,7 +69,7 @@ class LoginFragment : DialogFragment() {
 
                 authViewModel.authorization(login, pass)
             } else {
-                Toast.makeText(context, "Login is Null", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, R.string.Login_is_Null, Toast.LENGTH_LONG).show()
             }
         }
 
@@ -88,7 +91,7 @@ class LoginFragment : DialogFragment() {
                     login.setText("")
                     password.setText("")
                 }
-                Toast.makeText(context, "Login not found", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, R.string.Login_not_found, Toast.LENGTH_LONG).show()
             }
         }
         binding.registrButton.setOnClickListener {
@@ -112,10 +115,10 @@ class LoginFragment : DialogFragment() {
 
                     authViewModel.registration(name, login, pass)
                 } else {
-                    Toast.makeText(context, "Password not correct", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, R.string.Password_not_correct, Toast.LENGTH_LONG).show()
                 }
             } else {
-                Toast.makeText(context, "Login/Name is not empty", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, R.string.Login_Name_is_not_empty, Toast.LENGTH_LONG).show()
 
             }
         }
