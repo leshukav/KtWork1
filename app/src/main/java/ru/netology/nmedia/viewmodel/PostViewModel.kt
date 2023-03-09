@@ -65,9 +65,9 @@ class PostViewModel @Inject constructor(
     val media: MutableLiveData<MediaModel?>
         get() = _media
 
-    init {
-        loadPosts()
-    }
+//    init {
+//        loadPosts()
+//    }
 
     fun changePhoto(uri: Uri?, file: File?) {
         _media.value = MediaModel(uri, file)

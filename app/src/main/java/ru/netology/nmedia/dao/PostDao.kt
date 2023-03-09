@@ -1,5 +1,6 @@
 package ru.netology.nmedia.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -11,6 +12,9 @@ import ru.netology.nmedia.entity.PostEntity
 interface PostDao {
     @Query("SELECT * FROM PostEntity ORDER BY id DESC")
     fun get(): Flow<List<PostEntity>>
+
+    @Query("SELECT * FROM PostEntity ORDER BY id DESC")
+    fun getPagingSource(): PagingSource<Int, PostEntity>
 
     @Query("SELECT * FROM PostEntity WHERE hidden = 0 ORDER BY id DESC")
     fun getAllVisible(): Flow<List<PostEntity>>
@@ -54,6 +58,9 @@ interface PostDao {
         """
     )
    suspend fun likeById(id: Long)
+
+   @Query("DELETE FROM PostEntity")
+   suspend fun clear()
 
 
 }
