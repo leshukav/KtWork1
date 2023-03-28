@@ -1,25 +1,23 @@
 package ru.netology.nmedia.repository
 
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.map
+import android.os.Build
+import android.text.format.DateUtils
+import androidx.annotation.RequiresApi
+import androidx.paging.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okio.IOException
-import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.dao.PostDao
 import retrofit2.HttpException
 import ru.netology.nmedia.api.PostsApiService
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dao.PostRemoteKeyDao
 import ru.netology.nmedia.db.AppDb
-import ru.netology.nmedia.dto.Attachment
-import ru.netology.nmedia.dto.Media
+import ru.netology.nmedia.dto.*
 import ru.netology.nmedia.entity.PostEntity
 import ru.netology.nmedia.entity.toEntity
 import ru.netology.nmedia.enumeration.AttachmentType
@@ -28,8 +26,16 @@ import ru.netology.nmedia.error.AppError
 import ru.netology.nmedia.error.NetworkError
 import ru.netology.nmedia.error.UnknownError
 import ru.netology.nmedia.model.MediaModel
+import java.sql.Timestamp
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.time.Duration
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.random.Random
 
 @Singleton
 class PostRepositoryImpl @Inject constructor(
@@ -39,9 +45,11 @@ class PostRepositoryImpl @Inject constructor(
     private val postRemoteKeyDao: PostRemoteKeyDao,
     private val appDb: AppDb,
 ) : PostRepository {
+
+    @RequiresApi(Build.VERSION_CODES.O)
     @OptIn(ExperimentalPagingApi::class)
-    override val data = Pager(
-        config = PagingConfig(10, enablePlaceholders = false),
+    override val data: Flow<PagingData<FeedItem>> = Pager(
+        config = PagingConfig(10),
         pagingSourceFactory = { postDao.getPagingSource() },
         remoteMediator = PostRemoteMediator(
             apiService = apiService,
@@ -50,7 +58,51 @@ class PostRepositoryImpl @Inject constructor(
             appDb = appDb
         )
     ).flow
-        .map { it.map(PostEntity::toDto) }
+        .map {
+            it.map(PostEntity::toDto)
+                .insertSeparators { after, before ->
+                    if (before == null) {
+                        return@insertSeparators null
+                    }
+  /*                  val afterDateStr = after?.published
+                    val beforeDateStr = before?.published
+
+                    if (afterDateStr == null || beforeDateStr == null) {
+                        return@insertSeparators null
+                    }
+
+                    val pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                    val simpleDateFormat = SimpleDateFormat("yyy-MM-dd HH:mm:ss")
+                    val afterDate =
+                        LocalDateTime.parse(simpleDateFormat.format(afterDateStr * 1000L), pattern)
+                    val beforeDate =
+                        LocalDateTime.parse(simpleDateFormat.format(beforeDateStr * 1000L), pattern)
+
+                    val duration = Duration.between(beforeDate, afterDate)
+
+                        when (duration.toHours()) {
+                        in 0L..24L -> {
+                                TimingSeparator(Random.nextLong(), timing = Separator.TODAY)
+                        }
+                        in 24L..48L -> {
+                            TimingSeparator(Random.nextLong(), timing = Separator.YERSTUDAY)
+                        }
+                            in 24L..100L -> {
+                                TimingSeparator(Random.nextLong(), timing = Separator.LASTWEEK)
+                            }
+                        else -> {
+                            null
+                        }
+                    }
+   */
+                   if (after?.id?.rem(5) == 0L) {
+                        Ad(Random.nextLong(), "figma.jpg")
+                    } else {
+                        null
+                    }
+                }
+        }
+
 
     override fun getNewerCount(id: Long): Flow<Int> = flow {
         while (true) {
