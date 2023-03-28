@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/feedFragment2">
+    <fragment
+        android:id="@+id/feedFragment2"
+        android:name="ru.netology.nmedia.activity.FeedFragment"
+        android:label="@string/fragment_feed"
+        tools:layout="@layout/fragment_feed">
+        <action
+            android:id="@+id/action_feedFragment2_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_feedFragment2_to_imageFragment"
+            app:destination="@id/imageFragment" />
+        <action
+            android:id="@+id/action_feedFragment2_to_dialogFragment"
+            app:destination="@id/loginFragment" />
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/newPostFragment"
+        android:name="ru.netology.nmedia.activity.NewPostFragment"
+        android:label="@string/fragment_new_post"
+        tools:layout="@layout/fragment_new_post" >
+        <action
+            android:id="@+id/action_newPostFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageFragment"
+        android:name="ru.netology.nmedia.activity.ImageFragment"
+        android:label="@string/fragment_image"
+        tools:layout="@layout/fragment_image" />
+    <dialog
+        android:id="@+id/loginFragment"
+        android:name="ru.netology.nmedia.activity.LoginFragment"
+        android:label="Dialog"
+        tools:layout="@layout/fragment_login"/>
+
+</navigation>
